@@ -1,0 +1,31 @@
+@import "tailwindcss";
+
+html,
+body,
+#app {
+    height: 100%;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    max-width: none;
+    background: #000
+}
+
+body {
+    margin: 0;
+}
+
+html {
+    font-family: "Noto Sans SC", ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+    Roboto, "Helvetica Neue", Arial, "PingFang SC", "Hiragino Sans GB",
+    "Microsoft YaHei", "Noto Sans CJK SC", sans-serif;
+}
+
+.flex-col-center {
+    @apply flex flex-col justify-center items-center;
+}
+
+.flex-row-center {
+    @apply flex flex-row justify-center items-center;
+}
+
