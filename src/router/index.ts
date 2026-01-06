@@ -5,7 +5,7 @@ const routes: RouteRecordRaw[] = [
     path: '/',
     name: 'landing',
     component: () => import('@/views/Landing.vue'),
-    meta: { title: 'Welcome' },
+    meta: { title: 'Velocita | VELOCITA performance exhaust solutions engineered for clean fitment, refined tone, and reliable valve control.' },
   },
   {
     path: '/home',
