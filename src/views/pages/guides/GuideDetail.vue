@@ -193,9 +193,10 @@
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
 import { useRoute } from 'vue-router'
 import installationGuidesData from '@/assets/data/installation-guides.json'
+import { MEDIA_CONFIG, getMediaUrl } from '@/config'
 
 const route = useRoute()
-const MEDIA_BASE_URL = 'https://media.velocita-exhaust-au.com/installation-guides/'
+const MEDIA_BASE_URL = `${getMediaUrl(MEDIA_CONFIG.PATHS.INSTALLATION_GUIDES)}/`
 
 type Guide = {
   label: string

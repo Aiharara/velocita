@@ -72,6 +72,7 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
+import { BREAKPOINTS } from '@/config'
 
 interface Feature {
   icon: string
@@ -115,7 +116,7 @@ const features: Feature[] = [
 const expandedCards = ref<Set<number>>(new Set())
 const windowWidth = ref(typeof window !== 'undefined' ? window.innerWidth : 1024)
 
-const isMobile = computed(() => windowWidth.value < 768)
+const isMobile = computed(() => windowWidth.value < BREAKPOINTS.MOBILE)
 
 function handleResize() {
   windowWidth.value = window.innerWidth

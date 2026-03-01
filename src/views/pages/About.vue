@@ -289,38 +289,19 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
 import { useRouter } from 'vue-router'
 import NavBar from '@/components/NavBar.vue'
+import { MEDIA_CONFIG, getMediaUrl } from '@/config'
+import { useScroll, useBackButtonOpacity } from '@/composables/useScroll'
 
 const router = useRouter()
-const MEDIA_BASE_URL = 'https://media.velocita-exhaust-au.com/images/about-us/'
-const scrollY = ref(0)
-
-// Back按钮透明度：滚动时逐渐消失
-const backButtonOpacity = computed(() => {
-  const fadeStart = 50
-  const fadeEnd = 200
-  if (scrollY.value <= fadeStart) return 1
-  if (scrollY.value >= fadeEnd) return 0
-  return 1 - (scrollY.value - fadeStart) / (fadeEnd - fadeStart)
-})
+const MEDIA_BASE_URL = `${getMediaUrl(MEDIA_CONFIG.PATHS.IMAGES)}/about-us/`
+const scrollY = useScroll()
+const backButtonOpacity = useBackButtonOpacity(scrollY)
 
 function goBack() {
   router.push('/')
 }
-
-function handleScroll() {
-  scrollY.value = window.scrollY
-}
-
-onMounted(() => {
-  window.addEventListener('scroll', handleScroll, { passive: true })
-})
-
-onBeforeUnmount(() => {
-  window.removeEventListener('scroll', handleScroll)
-})
 </script>
 
 <style scoped>

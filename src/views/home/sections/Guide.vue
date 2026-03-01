@@ -106,11 +106,12 @@ import { useRouter } from 'vue-router'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import installationGuidesData from '@/assets/data/installation-guides.json'
+import { MEDIA_CONFIG, getMediaUrl } from '@/config'
 
 gsap.registerPlugin(ScrollTrigger)
 
 const router = useRouter()
-const MEDIA_BASE_URL = 'https://media.velocita-exhaust-au.com/installation-guides/'
+const MEDIA_BASE_URL = `${getMediaUrl(MEDIA_CONFIG.PATHS.INSTALLATION_GUIDES)}/`
 
 type Guide = {
   label: string

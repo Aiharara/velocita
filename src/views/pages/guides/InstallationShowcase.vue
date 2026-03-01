@@ -111,15 +111,18 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
+import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import NavBar from '@/components/NavBar.vue'
 import ServiceBanner from '@/components/ServiceBanner.vue'
 import installationGuidesData from '@/assets/data/installation-guides.json'
+import { MEDIA_CONFIG, getMediaUrl } from '@/config'
+import { useScroll, useBackButtonOpacity } from '@/composables/useScroll'
 
 const router = useRouter()
-const MEDIA_BASE_URL = 'https://media.velocita-exhaust-au.com/installation-guides/'
-const scrollY = ref(0)
+const MEDIA_BASE_URL = `${getMediaUrl(MEDIA_CONFIG.PATHS.INSTALLATION_GUIDES)}/`
+const scrollY = useScroll()
+const backButtonOpacity = useBackButtonOpacity(scrollY)
 
 type Guide = {
   label: string
@@ -130,21 +133,8 @@ type Guide = {
 
 const guides = ref<Guide[]>(installationGuidesData as Guide[])
 
-// Back按钮透明度：滚动时逐渐消失
-const backButtonOpacity = computed(() => {
-  const fadeStart = 50
-  const fadeEnd = 200
-  if (scrollY.value <= fadeStart) return 1
-  if (scrollY.value >= fadeEnd) return 0
-  return 1 - (scrollY.value - fadeStart) / (fadeEnd - fadeStart)
-})
-
 function goBack() {
   router.push('/#guide')
-}
-
-function handleScroll() {
-  scrollY.value = window.scrollY
 }
 
 function openGuideDetail(guide: Guide) {
@@ -155,14 +145,6 @@ function openGuideDetail(guide: Guide) {
   })
   window.open(routeData.href, '_blank')
 }
-
-onMounted(() => {
-  window.addEventListener('scroll', handleScroll, { passive: true })
-})
-
-onBeforeUnmount(() => {
-  window.removeEventListener('scroll', handleScroll)
-})
 </script>
 
 <style scoped>

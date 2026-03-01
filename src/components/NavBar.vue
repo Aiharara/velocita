@@ -31,7 +31,7 @@
               v-ripple
               v-bind="props.action"
               class="nav-link relative px-6 py-3 rounded-lg text-base font-medium tracking-wide text-white/70 hover:text-white transition-all duration-300 group"
-              :href="item.to"
+              href="javascript:void(0)"
               @click="(e: MouseEvent) => onNavClick(e, item as unknown as MenuItem)"
           >
             {{ item.label }}
@@ -89,11 +89,14 @@ const items = ref<MenuItem[]>([
   { label: 'Contact Us', to: '/#about' },
 ])
 
-function onNavClick(e: MouseEvent, item: MenuItem) {
-  if (item.to === '/#about') {
-    e.preventDefault()
-    eventBus.emit('highlight-contact')
-  }
+function onNavClick(_e: MouseEvent, item: MenuItem) {
+  // Use router.push to ensure scrollBehavior is invoked correctly
+  router.push(item.to).then(() => {
+    // After navigation completes, emit highlight-contact if navigating to about
+    if (item.to === '/#about') {
+      eventBus.emit('highlight-contact')
+    }
+  })
 }
 </script>
 

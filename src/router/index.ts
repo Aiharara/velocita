@@ -76,8 +76,24 @@ const routes: RouteRecordRaw[] = [
 const router = createRouter({
   history: createWebHistory(),
   routes,
-  scrollBehavior(_to, _from, savedPosition) {
+  scrollBehavior(to, _from, savedPosition) {
     if (savedPosition) return savedPosition
+    if (to.hash) {
+      // 跨页面导航时，目标元素可能还未渲染（懒加载组件）
+      // 需要轮询等待元素出现在 DOM 中
+      return new Promise((resolve) => {
+        const poll = setInterval(() => {
+          if (document.querySelector(to.hash)) {
+            clearInterval(poll)
+            resolve({ el: to.hash, behavior: 'smooth' })
+          }
+        }, 50)
+        setTimeout(() => {
+          clearInterval(poll)
+          resolve({ top: 0, left: 0 })
+        }, 3000)
+      })
+    }
     return { top: 0, left: 0 }
   },
 })

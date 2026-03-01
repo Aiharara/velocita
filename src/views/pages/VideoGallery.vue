@@ -172,18 +172,21 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
+import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import Dialog from 'primevue/dialog'
 import NavBar from '@/components/NavBar.vue'
 import ServiceBanner from '@/components/ServiceBanner.vue'
 import videoGallery from '@/assets/data/video-gallery.json'
+import { MEDIA_CONFIG, getMediaUrl } from '@/config'
+import { useScroll, useBackButtonOpacity } from '@/composables/useScroll'
 
-const VIDEO_BASE_URL = 'https://media.velocita-exhaust-au.com/videos'
+const VIDEO_BASE_URL = `${getMediaUrl(MEDIA_CONFIG.PATHS.VIDEOS)}`
 const router = useRouter()
 
 const selectedBrand = ref<string | null>(null)
-const scrollY = ref(0)
+const scrollY = useScroll()
+const backButtonOpacity = useBackButtonOpacity(scrollY)
 const showVideoDialog = ref(false)
 const currentVideo = ref<{ url: string; label: string; brandName: string } | null>(null)
 
@@ -197,21 +200,8 @@ const filteredBrands = computed(() => {
   }
 })
 
-// Back按钮透明度：滚动时逐渐消失
-const backButtonOpacity = computed(() => {
-  const fadeStart = 50
-  const fadeEnd = 200
-  if (scrollY.value <= fadeStart) return 1
-  if (scrollY.value >= fadeEnd) return 0
-  return 1 - (scrollY.value - fadeStart) / (fadeEnd - fadeStart)
-})
-
 function goBack() {
   router.push('/#cases')
-}
-
-function handleScroll() {
-  scrollY.value = window.scrollY
 }
 
 function handleDialogVideoLoaded(event: Event) {
@@ -228,14 +218,6 @@ function openVideoDialog(videoUrl: string, videoLabel: string, brandName: string
   }
   showVideoDialog.value = true
 }
-
-onMounted(() => {
-  window.addEventListener('scroll', handleScroll, { passive: true })
-})
-
-onBeforeUnmount(() => {
-  window.removeEventListener('scroll', handleScroll)
-})
 </script>
 
 <style scoped>

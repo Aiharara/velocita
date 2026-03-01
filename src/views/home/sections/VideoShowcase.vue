@@ -170,11 +170,12 @@ import videoGallery from '@/assets/data/video-gallery.json'
 import type { VideoGallery } from '@/types/video-gallery'
 import { getVideo, getBrandName } from '@/types/video-gallery'
 import { eventBus } from '@/utils/eventBus'
+import { MEDIA_CONFIG, getMediaUrl, BREAKPOINTS, DATA_CONFIG } from '@/config'
 
 gsap.registerPlugin(ScrollTrigger)
 
 const router = useRouter()
-const VIDEO_BASE_URL = 'https://media.velocita-exhaust-au.com/videos'
+const VIDEO_BASE_URL = `${getMediaUrl(MEDIA_CONFIG.PATHS.VIDEOS)}`
 
 type VideoItem = {
   url: string
@@ -238,12 +239,12 @@ const windowWidth = ref(typeof window !== 'undefined' ? window.innerWidth : 1024
 
 // 根据屏幕宽度计算轮播图显示数量
 const carouselNumVisible = computed(() => {
-  if (windowWidth.value < 768) {
-    return 1 // 手机屏幕显示1个
-  } else if (windowWidth.value < 1024) {
-    return 2 // 平板屏幕显示2个
+  if (windowWidth.value < BREAKPOINTS.MOBILE) {
+    return DATA_CONFIG.CAROUSEL.ITEMS_MOBILE
+  } else if (windowWidth.value < BREAKPOINTS.TABLET) {
+    return DATA_CONFIG.CAROUSEL.ITEMS_TABLET
   } else {
-    return 3 // 桌面屏幕显示3个
+    return DATA_CONFIG.CAROUSEL.ITEMS_DESKTOP
   }
 })
 

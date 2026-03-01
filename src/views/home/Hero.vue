@@ -16,7 +16,7 @@
           loop
           preload="auto"
       >
-        <source src="https://media.velocita-exhaust-au.com/videos/intro/intro.mp4" type="video/mp4" />
+        <source :src="heroVideoUrl" type="video/mp4" />
       </video>
 
       <!-- 暗化叠层 -->
@@ -110,22 +110,30 @@
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import exhaustAudio from '@/assets/audio/Porsche-panamera-turbo 4.0T_audio.mp3'
 import NavBar from '@/components/NavBar.vue'
+import { ANIMATION_CONFIG, MEDIA_CONFIG, getMediaUrl } from '@/config'
+import { useScroll, useNavBarOpacity } from '@/composables/useScroll'
 
 const videoRef = ref<HTMLVideoElement | null>(null)
 const isPlaying = ref(false)
-const isVideoMuted = ref(true) // 视频默认静音
-const scrollY = ref(0)
+const isVideoMuted = ref(true)
+const scrollY = useScroll()
 const window = ref({
   innerHeight: typeof globalThis.window !== 'undefined' ? globalThis.window.innerHeight : 1000
 })
 
 let audioElement: HTMLAudioElement | null = null
 
+// 构建视频URL
+const heroVideoUrl = computed(() => {
+  return `${getMediaUrl(MEDIA_CONFIG.PATHS.VIDEOS)}/intro/intro.mp4`
+})
+
+const HERO_CONFIG = ANIMATION_CONFIG.HERO
+
 // 视频透明度：在hero内容动画期间逐渐淡出
 const videoOpacity = computed(() => {
-  const HOLD_DURATION = 0.5
   const fadeStart = 0
-  const fadeEnd = window.value.innerHeight * (1.8 + HOLD_DURATION) // 在hero消失前淡出
+  const fadeEnd = window.value.innerHeight * (1.8 + HERO_CONFIG.HOLD_DURATION)
   if (scrollY.value <= fadeStart) return 1
   if (scrollY.value >= fadeEnd) return 0
   return 1 - (scrollY.value - fadeStart) / (fadeEnd - fadeStart)
@@ -134,28 +142,24 @@ const videoOpacity = computed(() => {
 // Hero内容移动：先向下到底部，保持不动，再向上直到消失
 const heroTranslateY = computed(() => {
   const vh = window.value.innerHeight
-  const initialOffset = -vh * 0.99 // 初始向上偏移80%
-  const bottomPosition = vh * 0.01 // 底部位置
-  const finalOffset = -vh * 1.2 // 最终向上消失
+  const initialOffset = -vh * HERO_CONFIG.INITIAL_OFFSET_RATIO
+  const bottomPosition = vh * 0.01
+  const finalOffset = -vh * HERO_CONFIG.FINAL_OFFSET_RATIO
 
-  // 阶段1: 0 -> 0.8vh，从上方移动到底部
-  const phase1End = vh * 0.8
+  const phase1End = vh * HERO_CONFIG.PHASE1_RATIO
   if (scrollY.value <= phase1End) {
     if (scrollY.value <= 0) return initialOffset
     const progress = scrollY.value / phase1End
     return initialOffset + progress * (bottomPosition - initialOffset)
   }
 
-  // 阶段2: 0.8vh -> (0.8 + HOLD_DURATION)vh，保持在底部不动
-  const HOLD_DURATION = 0.5 // 【可调参数】保持不动的时长（单位：vh）
-  const phase2End = phase1End + vh * HOLD_DURATION
+  const phase2End = phase1End + vh * HERO_CONFIG.HOLD_DURATION
   if (scrollY.value <= phase2End) {
-    return bottomPosition // 保持不动
+    return bottomPosition
   }
 
-  // 阶段3: (0.8 + HOLD_DURATION)vh -> (1.8 + HOLD_DURATION)vh，从底部向上移动直到消失
   const phase3Start = phase2End
-  const phase3End = phase2End + vh * 1.0
+  const phase3End = phase2End + vh * HERO_CONFIG.PHASE3_RATIO
   if (scrollY.value >= phase3End) return finalOffset
 
   const progress = (scrollY.value - phase3Start) / (phase3End - phase3Start)
@@ -166,48 +170,36 @@ const heroTranslateY = computed(() => {
 const heroOpacity = computed(() => {
   const vh = window.value.innerHeight
 
-  // 阶段1: 0 -> 0.4vh，从半透明变为完全不透明
   const phase1End = vh * 0.4
   if (scrollY.value <= phase1End) {
     if (scrollY.value <= 0) return 0.5
     return 0.5 + (scrollY.value / phase1End) * 0.5
   }
 
-  // 阶段2: 保持阶段（0.8vh -> 1.3vh），保持完全不透明
-  const HOLD_DURATION = 0.5 // 与heroTranslateY的HOLD_DURATION保持一致
-  const phase2End = vh * 0.8 + vh * HOLD_DURATION
+  const phase2End = vh * HERO_CONFIG.PHASE1_RATIO + vh * HERO_CONFIG.HOLD_DURATION
   if (scrollY.value < phase2End) return 1
 
-  // 阶段3: (0.8 + HOLD_DURATION)vh -> (1.8 + HOLD_DURATION)vh，开始淡出
   const phase3Start = phase2End
-  const phase3End = phase2End + vh * 1.0
+  const phase3End = phase2End + vh * HERO_CONFIG.PHASE3_RATIO
   if (scrollY.value >= phase3End) return 0
 
   return 1 - (scrollY.value - phase3Start) / (phase3End - phase3Start)
 })
 
 // NavBar透明度：从透明逐渐变实体
-const navOpacity = computed(() => {
-  const fadeStart = window.value.innerHeight * 0.3
-  const fadeEnd = window.value.innerHeight * 0.8
-  if (scrollY.value <= fadeStart) return 0
-  if (scrollY.value >= fadeEnd) return 1
-  return (scrollY.value - fadeStart) / (fadeEnd - fadeStart)
-})
+const navOpacity = useNavBarOpacity(scrollY, window.value.innerHeight)
 
 // 控制音频按钮的显示：第三阶段完成后隐藏
 const shouldShowAudioButton = computed(() => {
   const vh = window.value.innerHeight
-  const HOLD_DURATION = 0.5
-  const phase3End = vh * (1.8 + HOLD_DURATION)
+  const phase3End = vh * (1.8 + HERO_CONFIG.HOLD_DURATION)
 
   return scrollY.value < phase3End
 })
 
 function scrollToContent() {
-  const HOLD_DURATION = 0.5
   globalThis.window.scrollTo({
-    top: window.value.innerHeight * (1.8 + HOLD_DURATION + 0.5), // Hero消失后+0.5vh
+    top: window.value.innerHeight * (1.8 + HERO_CONFIG.HOLD_DURATION + 0.5),
     behavior: 'smooth'
   })
 }
@@ -242,10 +234,6 @@ function playExhaustSound() {
   }
 }
 
-function handleScroll() {
-  scrollY.value = globalThis.window.scrollY
-}
-
 function handleResize() {
   window.value.innerHeight = globalThis.window.innerHeight
 }
@@ -253,25 +241,19 @@ function handleResize() {
 // 监听滚动，第三阶段完成后自动静音
 watch(shouldShowAudioButton, (newValue) => {
   if (!newValue && videoRef.value && !isVideoMuted.value) {
-    // 第三阶段完成后，如果视频未静音，则自动静音
     isVideoMuted.value = true
     videoRef.value.muted = true
   }
 })
 
 onMounted(() => {
-  // 初始化window尺寸
   window.value.innerHeight = globalThis.window.innerHeight
-
-  globalThis.window.addEventListener('scroll', handleScroll, { passive: true })
   globalThis.window.addEventListener('resize', handleResize, { passive: true })
 })
 
 onBeforeUnmount(() => {
-  globalThis.window.removeEventListener('scroll', handleScroll)
   globalThis.window.removeEventListener('resize', handleResize)
 
-  // 清理音频
   if (audioElement) {
     audioElement.pause()
     audioElement.src = ''
