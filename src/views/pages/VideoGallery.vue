@@ -175,7 +175,7 @@
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
 import { useRouter } from 'vue-router'
 import Dialog from 'primevue/dialog'
-import NavBar from '@/views/home/NavBar.vue'
+import NavBar from '@/components/NavBar.vue'
 import ServiceBanner from '@/components/ServiceBanner.vue'
 import videoGallery from '@/assets/data/video-gallery.json'
 
@@ -239,6 +239,14 @@ onBeforeUnmount(() => {
 </script>
 
 <style scoped>
+/* 工具类 */
+.flex-col-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
 /* 视频卡片 */
 .video-card {
   position: relative;

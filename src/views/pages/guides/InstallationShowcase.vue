@@ -1,4 +1,4 @@
-<!-- views/InstallationShowcase.vue -->
+<!-- views/pages/guides/InstallationShowcase.vue -->
 <template>
   <div class="relative bg-black text-white min-h-screen">
     <!-- NavBar -->
@@ -113,7 +113,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
 import { useRouter } from 'vue-router'
-import NavBar from '@/views/home/NavBar.vue'
+import NavBar from '@/components/NavBar.vue'
 import ServiceBanner from '@/components/ServiceBanner.vue'
 import installationGuidesData from '@/assets/data/installation-guides.json'
 

@@ -1,4 +1,4 @@
-<!-- views/GuideDetail.vue -->
+<!-- views/pages/guides/GuideDetail.vue -->
 <template>
   <div class="min-h-screen bg-black">
     <!-- Header -->

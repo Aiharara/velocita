@@ -291,7 +291,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
 import { useRouter } from 'vue-router'
-import NavBar from '@/views/home/NavBar.vue'
+import NavBar from '@/components/NavBar.vue'
 
 const router = useRouter()
 const MEDIA_BASE_URL = 'https://media.velocita-exhaust-au.com/images/about-us/'

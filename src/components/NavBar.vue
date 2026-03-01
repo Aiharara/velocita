@@ -70,7 +70,7 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import Menubar from 'primevue/menubar'
-import { eventBus } from '@/utils/eventBus'
+import { eventBus } from '@/utils/eventBus.ts'
 
 interface MenuItem { label: string; to: string; [key: string]: unknown }
 

@@ -1,4 +1,4 @@
-<!-- views/home/ProductFeatures.vue -->
+<!-- views/home/sections/WhyChooseVelocita.vue -->
 <template>
   <section id="features" class="relative py-5 md:py-5 bg-black overflow-hidden">
     <!-- 背景装饰 -->

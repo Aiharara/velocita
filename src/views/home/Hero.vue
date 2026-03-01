@@ -109,7 +109,7 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import exhaustAudio from '@/assets/audio/Porsche-panamera-turbo 4.0T_audio.mp3'
-import NavBar from '@/views/home/NavBar.vue'
+import NavBar from '@/components/NavBar.vue'
 
 const videoRef = ref<HTMLVideoElement | null>(null)
 const isPlaying = ref(false)

@@ -95,7 +95,7 @@
 <script setup lang="ts">
 import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { RouterLink, useRoute } from 'vue-router'
-import { eventBus } from '@/utils/eventBus'
+import { eventBus } from '@/utils/eventBus.ts'
 
 const route = useRoute()
 const contactRef = ref<HTMLElement | null>(null)

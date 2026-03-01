@@ -15,7 +15,7 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/video-gallery',
     name: 'video-gallery',
-    component: () => import('@/views/VideoGallery.vue'),
+    component: () => import('@/views/pages/VideoGallery.vue'),
     meta: {
       title: 'Video Gallery | Velocita Exhaust Sound Demos & Installation Videos',
       description: 'Watch exhaust sound demos and installation videos for BMW, Mercedes-Benz, Audi, Porsche, Lamborghini, Ferrari, Aston Martin and more. Hear the Velocita difference.',
@@ -24,7 +24,7 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/guides',
     name: 'all-guides',
-    component: () => import('@/views/InstallationShowcase.vue'),
+    component: () => import('@/views/pages/guides/InstallationShowcase.vue'),
     meta: {
       title: 'Installation Guides | Velocita Performance Exhaust',
       description: 'Step-by-step installation guides for Velocita performance exhaust systems. Bolt-on fitment instructions for BMW, Mercedes-Benz, Audi and more vehicles.',
@@ -33,7 +33,7 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/guides/:folder',
     name: 'guide-detail',
-    component: () => import('@/views/GuideDetail.vue'),
+    component: () => import('@/views/pages/guides/GuideDetail.vue'),
     meta: {
       title: 'Installation Guide | Velocita Performance Exhaust',
       description: 'Detailed installation guide for Velocita performance exhaust system. Step-by-step instructions with photos for bolt-on fitment.',
@@ -42,7 +42,7 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/about',
     name: 'about',
-    component: () => import('@/views/About.vue'),
+    component: () => import('@/views/pages/About.vue'),
     meta: {
       title: 'About Us | Velocita Performance Exhaust - Sydney, Australia',
       description: 'Learn about Velocita Performance Exhaust, premium exhaust system manufacturer based in Sydney, Australia. Precision-engineered exhaust solutions for luxury and performance vehicles.',
@@ -51,7 +51,7 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/privacy',
     name: 'privacy',
-    component: () => import('@/views/PrivacyPolicy.vue'),
+    component: () => import('@/views/pages/legal/PrivacyPolicy.vue'),
     meta: {
       title: 'Privacy Policy | Velocita Performance Exhaust',
       description: 'Velocita Performance Exhaust privacy policy. Learn how we collect, use, and protect your personal information.',
@@ -60,7 +60,7 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/terms',
     name: 'terms',
-    component: () => import('@/views/TermsOfUse.vue'),
+    component: () => import('@/views/pages/legal/TermsOfUse.vue'),
     meta: {
       title: 'Terms of Use | Velocita Performance Exhaust',
       description: 'Terms of use for the Velocita Performance Exhaust website and services.',

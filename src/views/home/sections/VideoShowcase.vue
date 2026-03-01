@@ -1,4 +1,4 @@
-<!-- views/home/VideoShowcase.vue -->
+<!-- views/home/sections/VideoShowcase.vue -->
 <template>
   <section id="cases" class="relative py-5 md:py-5 overflow-hidden">
     <!-- 背景装饰 -->
@@ -267,14 +267,6 @@ function openVideoDialog(video: VideoItem) {
   currentVideo.value = video
   showVideoDialog.value = true
 }
-
-// function closeVideoDialog() {
-//   showVideoDialog.value = false
-//   // 延迟清空currentVideo，等待dialog关闭动画完成
-//   setTimeout(() => {
-//     currentVideo.value = null
-//   }, 300)
-// }
 
 function goToGallery() {
   router.push('/video-gallery')

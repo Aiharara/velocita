@@ -22,10 +22,10 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import Hero from '@/views/home/Hero.vue'
-import VideoShowcase from '@/views/home/VideoShowcase.vue'
-import ExhaustSystems from '@/views/home/ExhaustSystems.vue'
-import WhyChooseVelocita from '@/views/home/WhyChooseVelocita.vue'
-import Guide from '@/views/home/Guide.vue'
+import VideoShowcase from '@/views/home/sections/VideoShowcase.vue'
+import ExhaustSystems from '@/views/home/sections/ExhaustSystems.vue'
+import WhyChooseVelocita from '@/views/home/sections/WhyChooseVelocita.vue'
+import Guide from '@/views/home/sections/Guide.vue'
 
 const scrollY = ref(0)
 const windowHeight = ref(typeof globalThis.window !== 'undefined' ? globalThis.window.innerHeight : 1000)

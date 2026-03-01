@@ -1,4 +1,4 @@
-<!-- views/home/ProductList.vue -->
+<!-- views/home/sections/ExhaustSystems.vue -->
 <template>
   <section id="products" class="relative py-5 md:py-5 bg-black overflow-hidden">
     <div class="relative max-w-7xl mx-auto px-4 md:px-8">

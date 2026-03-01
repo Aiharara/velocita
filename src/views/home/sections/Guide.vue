@@ -1,4 +1,4 @@
-<!-- views/home/ModiGuide.vue -->
+<!-- views/home/sections/Guide.vue -->
 <template>
   <section id="guide" class="relative py-5 md:py-5 bg-black overflow-hidden">
     <!-- 背景装饰 -->
