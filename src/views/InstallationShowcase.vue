@@ -1,4 +1,4 @@
-<!-- views/AllGuides.vue -->
+<!-- views/InstallationShowcase.vue -->
 <template>
   <div class="relative bg-black text-white min-h-screen">
     <!-- NavBar -->

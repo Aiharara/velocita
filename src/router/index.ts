@@ -24,7 +24,7 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/guides',
     name: 'all-guides',
-    component: () => import('@/views/AllGuides.vue'),
+    component: () => import('@/views/InstallationShowcase.vue'),
     meta: {
       title: 'Installation Guides | Velocita Performance Exhaust',
       description: 'Step-by-step installation guides for Velocita performance exhaust systems. Bolt-on fitment instructions for BMW, Mercedes-Benz, Audi and more vehicles.',
@@ -51,7 +51,7 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/privacy',
     name: 'privacy',
-    component: () => import('@/views/Privacy.vue'),
+    component: () => import('@/views/PrivacyPolicy.vue'),
     meta: {
       title: 'Privacy Policy | Velocita Performance Exhaust',
       description: 'Velocita Performance Exhaust privacy policy. Learn how we collect, use, and protect your personal information.',
@@ -60,7 +60,7 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/terms',
     name: 'terms',
-    component: () => import('@/views/Terms.vue'),
+    component: () => import('@/views/TermsOfUse.vue'),
     meta: {
       title: 'Terms of Use | Velocita Performance Exhaust',
       description: 'Terms of use for the Velocita Performance Exhaust website and services.',

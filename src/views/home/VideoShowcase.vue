@@ -1,4 +1,4 @@
-<!-- views/home/ModiCases.vue -->
+<!-- views/home/VideoShowcase.vue -->
 <template>
   <section id="cases" class="relative py-5 md:py-5 overflow-hidden">
     <!-- 背景装饰 -->

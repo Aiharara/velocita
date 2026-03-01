@@ -116,10 +116,10 @@
       <!-- 顶部 20%：透明 -> 黑色 渐变覆盖层 -->
 
 <!--      <Hero />-->
-      <ModiCases />
-      <ProductList />
-      <ProductFeatures />
-      <ModiGuide />
+      <VideoShowcase />
+      <ExhaustSystems />
+      <WhyChooseVelocita />
+      <Guide />
     </main>
   </div>
 </template>
@@ -128,10 +128,10 @@
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import exhaustAudio from '@/assets/audio/Porsche-panamera-turbo 4.0T_audio.mp3'
 import NavBar from '@/views/home/NavBar.vue'
-import ModiCases from '@/views/home/ModiCases.vue'
-import ProductList from '@/views/home/ProductList.vue'
-import ProductFeatures from '@/views/home/ProductFeatures.vue'
-import ModiGuide from '@/views/home/ModiGuide.vue'
+import VideoShowcase from '@/views/home/VideoShowcase.vue'
+import ExhaustSystems from '@/views/home/ExhaustSystems.vue'
+import WhyChooseVelocita from '@/views/home/WhyChooseVelocita.vue'
+import Guide from '@/views/home/Guide.vue'
 
 const videoRef = ref<HTMLVideoElement | null>(null)
 const isPlaying = ref(false)
