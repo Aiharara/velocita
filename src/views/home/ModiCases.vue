@@ -167,6 +167,9 @@ import Dialog from 'primevue/dialog'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import videoGallery from '@/assets/data/video-gallery.json'
+import type { VideoGallery } from '@/types/video-gallery'
+import { getVideo, getBrandName } from '@/types/video-gallery'
+import { eventBus } from '@/utils/eventBus'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -182,73 +185,51 @@ type VideoItem = {
   poster: string
 }
 
-// 从JSON中挑选超跑视频
-const videos = ref<VideoItem[]>([
-  {
-    url: `${VIDEO_BASE_URL}${videoGallery.ferrari.videos[0]!.url}`,
-    title: `${videoGallery.ferrari.name} ${videoGallery.ferrari.videos[0]!.label}`,
-    subtitle: 'Velocita titanium exhaust • Pure V8 sound',
-    tag: 'Supercar',
-    brand: 'Ferrari',
-    poster: `${VIDEO_BASE_URL}${videoGallery.ferrari.videos[0]!.poster}`
-  },
-  {
-    url: `${VIDEO_BASE_URL}${videoGallery.lamborghini.videos[2]!.url}`,
-    title: `${videoGallery.lamborghini.name} ${videoGallery.lamborghini.videos[2]!.label}`,
-    subtitle: 'Natural aspirated V10 • Track ready',
-    tag: 'Supercar',
-    brand: 'Lamborghini',
-    poster: `${VIDEO_BASE_URL}${videoGallery.lamborghini.videos[2]!.poster}`
-  },
-  {
-    url: `${VIDEO_BASE_URL}${videoGallery.mclaren.videos[1]!.url}`,
-    title: `${videoGallery.mclaren.name} ${videoGallery.mclaren.videos[1]!.label}`,
-    subtitle: 'Twin-turbo V8 • Carbon titanium system',
-    tag: 'Supercar',
-    brand: 'McLaren',
-    poster: `${VIDEO_BASE_URL}${videoGallery.mclaren.videos[1]!.poster}`
-  },
-  {
-    url: `${VIDEO_BASE_URL}${videoGallery['aston-martin'].videos[6]!.url}`,
-    title: `${videoGallery['aston-martin'].name} ${videoGallery['aston-martin'].videos[6]!.label}`,
-    subtitle: 'AMG V8 powered • Valved exhaust control',
-    tag: 'GT',
-    brand: 'Aston Martin',
-    poster: `${VIDEO_BASE_URL}${videoGallery['aston-martin'].videos[6]!.poster}`
-  },
-  {
-    url: `${VIDEO_BASE_URL}${videoGallery.audi.videos[0]!.url}`,
-    title: `${videoGallery.audi.name} ${videoGallery.audi.videos[0]!.label}`,
-    subtitle: 'V10 naturally aspirated • Iconic sound',
-    tag: 'Supercar',
-    brand: 'Audi',
-    poster: `${VIDEO_BASE_URL}${videoGallery.audi.videos[0]!.poster}`
-  },
-  {
-    url: `${VIDEO_BASE_URL}${videoGallery.bmw.videos[6]!.url}`,
-    title: `${videoGallery.bmw.name} ${videoGallery.bmw.videos[6]!.label}`,
-    subtitle: 'S63 V8 twin-turbo • Competition spec',
-    tag: 'Performance',
-    brand: 'BMW',
-    poster: `${VIDEO_BASE_URL}${videoGallery.bmw.videos[6]!.poster}`
-  },
-  {
-    url: `${VIDEO_BASE_URL}${videoGallery['mercedes-benz'].videos[0]!.url}`,
-    title: `${videoGallery['mercedes-benz'].name} ${videoGallery['mercedes-benz'].videos[0]!.label}`,
-    subtitle: 'Inline-6 turbo • Valved system',
-    tag: 'AMG',
-    brand: 'Mercedes-Benz',
-    poster: `${VIDEO_BASE_URL}${videoGallery['mercedes-benz'].videos[0]!.poster}`
-  },
-  {
-    url: `${VIDEO_BASE_URL}${videoGallery.lotus.videos[0]!.url}`,
-    title: `${videoGallery.lotus.name} ${videoGallery.lotus.videos[0]!.label}`,
-    subtitle: 'Lightweight performance • Pure driving experience',
-    tag: 'Track',
-    brand: 'Lotus',
-    poster: `${VIDEO_BASE_URL}${videoGallery.lotus.videos[0]!.poster}`
-  },
-])
+// 配置驱动的视频数据 - 类型安全，易于维护
+interface VideoCaseConfig {
+  brand: string
+  videoIndex: number
+  subtitle: string
+  tag: string
+}
+
+const videoCasesConfig: VideoCaseConfig[] = [
+  { brand: 'ferrari', videoIndex: 0, subtitle: 'Velocita titanium exhaust • Pure V8 sound', tag: 'Supercar' },
+  { brand: 'lamborghini', videoIndex: 2, subtitle: 'Natural aspirated V10 • Track ready', tag: 'Supercar' },
+  { brand: 'mclaren', videoIndex: 1, subtitle: 'Twin-turbo V8 • Carbon titanium system', tag: 'Supercar' },
+  { brand: 'aston-martin', videoIndex: 6, subtitle: 'AMG V8 powered • Valved exhaust control', tag: 'GT' },
+  { brand: 'audi', videoIndex: 0, subtitle: 'V10 naturally aspirated • Iconic sound', tag: 'Supercar' },
+  { brand: 'bmw', videoIndex: 6, subtitle: 'S63 V8 twin-turbo • Competition spec', tag: 'Performance' },
+  { brand: 'mercedes-benz', videoIndex: 0, subtitle: 'Inline-6 turbo • Valved system', tag: 'AMG' },
+  { brand: 'lotus', videoIndex: 0, subtitle: 'Lightweight performance • Pure driving experience', tag: 'Track' },
+]
+
+// 从配置和JSON生成视频数据 - 类型安全
+const buildVideos = (): VideoItem[] => {
+  const typedGallery = videoGallery as VideoGallery
+  return videoCasesConfig
+    .map(config => {
+      const video = getVideo(typedGallery, config.brand, config.videoIndex)
+      const brandName = getBrandName(typedGallery, config.brand)
+
+      if (!video || !brandName) {
+        console.warn(`Video not found for brand: ${config.brand}, index: ${config.videoIndex}`)
+        return null
+      }
+
+      return {
+        url: `${VIDEO_BASE_URL}${video.url}`,
+        title: `${brandName} ${video.label}`,
+        subtitle: config.subtitle,
+        tag: config.tag,
+        brand: brandName,
+        poster: `${VIDEO_BASE_URL}${video.poster}`
+      }
+    })
+    .filter((item): item is VideoItem => item !== null)
+}
+
+const videos = ref<VideoItem[]>(buildVideos())
 
 const showVideoDialog = ref(false)
 const currentVideo = ref<VideoItem | null>(null)
@@ -300,7 +281,7 @@ function goToGallery() {
 }
 
 function triggerContact() {
-  window.dispatchEvent(new CustomEvent('highlight-contact'))
+  eventBus.emit('highlight-contact')
 }
 
 onMounted(() => {

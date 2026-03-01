@@ -95,12 +95,14 @@
 <script setup lang="ts">
 import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { RouterLink, useRoute } from 'vue-router'
+import { eventBus } from '@/utils/eventBus'
 
 const route = useRoute()
 const contactRef = ref<HTMLElement | null>(null)
 const isHighlighted = ref(false)
 
 let removeTimer: ReturnType<typeof setTimeout> | null = null
+let unsubscribeHighlightContact: (() => void) | null = null
 
 function triggerHighlight() {
   if (!contactRef.value) return
@@ -138,13 +140,15 @@ onMounted(() => {
 
   // Listen for hashchange events (for same-page navigation)
   window.addEventListener('hashchange', handleHashChange)
-  // Listen for custom event from NavBar
-  window.addEventListener('highlight-contact', onHighlightContact)
+  // Listen for highlight-contact event from EventBus
+  unsubscribeHighlightContact = eventBus.on('highlight-contact', onHighlightContact)
 })
 
 onBeforeUnmount(() => {
   window.removeEventListener('hashchange', handleHashChange)
-  window.removeEventListener('highlight-contact', onHighlightContact)
+  if (unsubscribeHighlightContact) {
+    unsubscribeHighlightContact()
+  }
   if (removeTimer) clearTimeout(removeTimer)
 })
 </script>

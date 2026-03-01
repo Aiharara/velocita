@@ -141,6 +141,7 @@
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
 import { useRouter } from 'vue-router'
 import NavBar from '@/views/home/NavBar.vue'
+import { eventBus } from '@/utils/eventBus'
 
 const router = useRouter()
 const scrollY = ref(0)
@@ -161,7 +162,7 @@ function goBack() {
 function triggerContact() {
   router.push('/').then(() => {
     setTimeout(() => {
-      window.dispatchEvent(new CustomEvent('highlight-contact'))
+      eventBus.emit('highlight-contact')
     }, 300)
   })
 }

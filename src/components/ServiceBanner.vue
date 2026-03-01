@@ -24,7 +24,9 @@
 </template>
 
 <script setup lang="ts">
+import { eventBus } from '@/utils/eventBus'
+
 function triggerContact() {
-  window.dispatchEvent(new CustomEvent('highlight-contact'))
+  eventBus.emit('highlight-contact')
 }
 </script>
