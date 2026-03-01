@@ -6,7 +6,7 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/',
     name: 'home',
-    component: () => import('@/views/Landing.vue'),
+    component: () => import('@/views/Home.vue'),
     meta: {
       title: 'Velocita | Performance Exhaust Systems - Bolt-On Valved Exhaust for BMW, Mercedes, Audi & More',
       description: 'Velocita performance exhaust systems engineered for clean fitment, refined tone, and reliable valve control. Vehicle-specific bolt-on exhaust solutions for BMW, Mercedes-Benz, Audi, Porsche, Lamborghini, Ferrari and more. Based in Sydney, Australia.',
