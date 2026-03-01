@@ -1,122 +1,220 @@
 <!-- views/home/ModiGuide.vue -->
 <template>
-  <section id="guide" class="py-14 md:py-20 bg-black">
-    <div class="max-w-6xl mx-auto px-4 md:px-8">
-      <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-8 flex-col-center">
+  <section id="guide" class="relative py-5 md:py-5 bg-black overflow-hidden">
+    <!-- 背景装饰 -->
+    <div class="absolute inset-0">
+      <div class="absolute inset-0 bg-grid-pattern opacity-[0.01]"></div>
+      <div class="absolute inset-0 noise-texture opacity-[0.02]"></div>
+    </div>
+
+    <div class="relative max-w-7xl mx-auto px-4 md:px-8">
+      <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12">
         <div>
-          <h2 class="text-3xl md:text-4xl font-semibold text-white tracking-tight">
-            Upgrade Guide
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/10 bg-white/5 text-white/60 text-xs mb-4">
+            <i class="pi pi-book text-yellow-400/80 text-[10px]"></i>
+            <span>Installation Guides</span>
+          </div>
+          <h2 class="text-4xl md:text-5xl font-bold text-white tracking-tight">
+            Installation Showcase
           </h2>
-          <p class="mt-2 text-white/60 max-w-2xl">
-            Fitment notes, valve logic, sound targets, and common pitfalls—written for real installs.
+          <p class="mt-3 text-white/60 text-lg max-w-2xl">
+            Real installation cases with detailed photos and videos from our workshop.
           </p>
         </div>
 
-        <Button
-            label="Browse All Guides"
-            icon="pi pi-arrow-right"
-            iconPos="right"
-            class="!bg-white/5 !text-white !border !border-white/10 hover:!bg-white/10"
-        />
+        <router-link
+            to="/guides"
+            class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-white/5 border border-white/15 text-white hover:bg-white/10 hover:border-white/25 transition-all duration-300 hover:scale-105"
+        >
+          <span>Browse All Guides</span>
+          <i class="pi pi-arrow-right"></i>
+        </router-link>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+      <!-- 展示前4个帖子入口 -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         <article
-            v-for="item in guides"
-            :key="item.title"
-            class="group rounded-2xl overflow-hidden border border-white/10 bg-white/[0.03] hover:bg-white/[0.05] transition"
+            v-for="(guide, index) in previewGuides"
+            :key="index"
+            @click="openGuideDetail(guide)"
+            class="guide-card group relative rounded-2xl overflow-hidden border border-white/10 bg-gradient-to-br from-white/[0.05] to-white/[0.02] backdrop-blur-sm transition-all duration-500 hover:border-white/25 hover:-translate-y-2 hover:shadow-2xl hover:shadow-yellow-500/10 cursor-pointer flex flex-col h-[280px]"
         >
-          <div class="flex gap-4 p-4">
+          <!-- 顶部高光 -->
+          <div class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
 
-            <div class="relative w-56 shrink-0">
-              <img :src="item.image" class="w-full h-full object-fill" />
-              <div class="absolute inset-0 rounded-xl ring-1 ring-white/10"></div>
+          <!-- 封面图片 -->
+          <div class="relative h-48 w-full bg-gradient-to-b from-white/5 to-transparent overflow-hidden">
+            <img
+                :src="`${MEDIA_BASE_URL}${guide.images[0]}`"
+                class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                :alt="guide.label"
+            />
+            <!-- 图片遮罩 -->
+            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+
+            <!-- 媒体计数 -->
+            <div class="absolute top-3 right-3 flex gap-2">
+              <span v-if="guide.videos.length > 0" class="text-[10px] px-2 py-0.5 rounded-md bg-black/60 backdrop-blur-md border border-white/20 text-white/90 font-medium">
+                <i class="pi pi-video text-[9px] mr-1"></i>
+                {{ guide.videos.length }}
+              </span>
+              <span class="text-[10px] px-2 py-0.5 rounded-md bg-black/60 backdrop-blur-md border border-white/20 text-white/90 font-medium">
+                <i class="pi pi-images text-[9px] mr-1"></i>
+                {{ guide.images.length }}
+              </span>
             </div>
 
-            <div class="min-w-0 flex-1">
-              <div class="flex items-start justify-between gap-3">
-                <h3 class="font-semibold text-white truncate">
-                  {{ item.title }}
-                </h3>
-                <span class="text-[11px] px-2 py-1 rounded-md bg-black/40 border border-white/10 text-white/70">
-                  {{ item.level }}
-                </span>
-              </div>
-
-              <p class="text-white/60 text-sm mt-2 line-clamp-2">
-                {{ item.desc }}
-              </p>
-
-              <div class="mt-3 flex flex-wrap gap-2">
-                <span
-                    v-for="t in item.tags"
-                    :key="t"
-                    class="text-[11px] px-2 py-1 rounded-full bg-white/5 text-white/70 border border-white/10"
-                >
-                  {{ t }}
-                </span>
-              </div>
-
-              <div class="mt-4 flex items-center justify-between">
-                <div class="text-xs text-white/50">Updated {{ item.updated }}</div>
-                <a class="text-sm text-yellow-300 hover:text-yellow-200 transition" href="#">
-                  Read more
-                  <i class="pi pi-angle-right text-xs ml-1"></i>
-                </a>
+            <!-- hover显示的查看提示 -->
+            <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+              <div class="p-3 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white">
+                <i class="pi pi-eye text-lg"></i>
               </div>
             </div>
           </div>
+
+          <!-- 内容区域 -->
+          <div class="p-4 flex-1 flex flex-col">
+            <h3 class="text-white font-semibold text-sm group-hover:text-yellow-300 transition-colors line-clamp-2">
+              {{ guide.label }}
+            </h3>
+            <div class="pt-3 mt-auto flex items-center justify-between text-xs text-white/50">
+              <span>
+                <i class="pi pi-folder-open text-[9px] mr-1"></i>
+                {{ guide.images.length + guide.videos.length }} items
+              </span>
+              <span class="text-yellow-400/70">
+                View Gallery
+                <i class="pi pi-arrow-right text-[9px] ml-1 group-hover:translate-x-1 transition-transform"></i>
+              </span>
+            </div>
+          </div>
+
+          <!-- 微光效果 -->
+          <div class="shimmer-effect"></div>
         </article>
       </div>
     </div>
+
+    <!-- 底部分隔线 -->
+    <div class="mt-14 h-px w-full bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
   </section>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-import Button from 'primevue/button'
+import { onMounted, ref, computed } from 'vue'
+import { useRouter } from 'vue-router'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import installationGuidesData from '@/assets/data/installation-guides.json'
+
+gsap.registerPlugin(ScrollTrigger)
+
+const router = useRouter()
+const MEDIA_BASE_URL = 'https://media.velocita-exhaust-au.com/installation-guides/'
 
 type Guide = {
-  image: string
-  title: string
-  desc: string
-  level: 'Beginner' | 'Intermediate' | 'Advanced'
-  tags: string[]
-  updated: string
+  label: string
+  folder_path: string
+  images: string[]
+  videos: string[]
 }
 
-const guides = ref<Guide[]>([
-  {
-    image: '/guides/benz1.png',
-    title: 'GLC 300 (EU6) Valved System Install Checklist',
-    desc: 'A practical walkthrough covering valve calibration, CAN integration notes, and common rattle points.',
-    level: 'Intermediate',
-    tags: ['Valves', 'Fitment', 'NVH'],
-    updated: '2026-01',
-  },
-  {
-    image: '/guides/bmw2.png',
-    title: 'How to Choose: Cat-Back vs Downpipe vs Full System',
-    desc: 'Sound goals, emissions considerations, and how each configuration impacts spool and drivability.',
-    level: 'Beginner',
-    tags: ['Buying Guide', 'Sound', 'Flow'],
-    updated: '2025-12',
-  },
-  {
-    image: '/guides/g3.png',
-    title: 'Resonator Tuning: Eliminating Drone Without Killing Tone',
-    desc: 'A quick reference for frequency ranges, cabin resonance, and resonator placement strategies.',
-    level: 'Advanced',
-    tags: ['Drone', 'Resonator', 'Acoustics'],
-    updated: '2025-11',
-  },
-  {
-    image: '/guides/benz1.png',
-    title: 'Valve Maps: Comfort / Sport / Track Profiles Explained',
-    desc: 'How valve logic changes sound pressure and backpressure across RPM, plus recommended presets.',
-    level: 'Intermediate',
-    tags: ['Valve Map', 'Profiles', 'Daily'],
-    updated: '2025-10',
-  },
-])
+const guides = ref<Guide[]>(installationGuidesData as Guide[])
+
+// 前4个作为预览
+const previewGuides = computed(() => guides.value.slice(0, 4))
+
+function openGuideDetail(guide: Guide) {
+  // 在新标签页打开详情页
+  const routeData = router.resolve({
+    name: 'guide-detail',
+    params: { folder: guide.folder_path }
+  })
+  window.open(routeData.href, '_blank')
+}
+
+onMounted(() => {
+  // 设置初始可见状态，避免因ScrollTrigger未触发导致不可见
+  gsap.set('#guide', { opacity: 1 })
+  gsap.set('.guide-card', { opacity: 1 })
+
+  // 滚动触发的入场动画
+  gsap.from('#guide', {
+    opacity: 0,
+    y: 50,
+    duration: 1,
+    ease: 'power2.out',
+    scrollTrigger: {
+      trigger: '#guide',
+      start: 'top 80%',
+      toggleActions: 'play none none reverse'
+    }
+  })
+
+  // 卡片交错入场
+  gsap.from('.guide-card', {
+    opacity: 0,
+    y: 30,
+    stagger: 0.15,
+    duration: 0.8,
+    ease: 'power2.out',
+    scrollTrigger: {
+      trigger: '.guide-card',
+      start: 'top 85%',
+      toggleActions: 'play none none reverse'
+    }
+  })
+})
 </script>
+
+<style scoped>
+/* 网格背景 */
+.bg-grid-pattern {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* 噪点纹理 */
+.noise-texture {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='2.5' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 200px 200px;
+}
+
+/* 指南卡片 */
+.guide-card {
+  position: relative;
+  overflow: hidden;
+}
+
+/* 微光效果 */
+.shimmer-effect {
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.05),
+    transparent
+  );
+  pointer-events: none;
+}
+
+.guide-card:hover .shimmer-effect {
+  animation: shimmer 1.5s ease-in-out;
+}
+
+@keyframes shimmer {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 200%;
+  }
+}
+</style>

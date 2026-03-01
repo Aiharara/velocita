@@ -1,0 +1,11 @@
+# Velocita Performance Exhaust
+# https://www.velocita-exhaust-au.com
+
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://www.velocita-exhaust-au.com/sitemap.xml
+
+# Disallow admin or internal paths (if any)
+Disallow: /api/

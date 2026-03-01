@@ -5,10 +5,12 @@
         <component :is="Component" />
       </Transition>
     </RouterView>
+    <Footer />
   </div>
 </template>
 
 <script setup lang="ts">
+import Footer from '@/views/home/Footer.vue'
 </script>
 
 <style>
@@ -30,7 +32,7 @@
 }
 
 .main-entry {
-  height: 100%;
+  min-height: 100vh;
   width: 100%;
 }
 </style>
