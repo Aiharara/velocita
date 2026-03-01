@@ -191,11 +191,10 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { useRoute } from 'vue-router'
 import installationGuidesData from '@/assets/data/installation-guides.json'
 
 const route = useRoute()
-const router = useRouter()
 const MEDIA_BASE_URL = 'https://media.velocita-exhaust-au.com/installation-guides/'
 
 type Guide = {

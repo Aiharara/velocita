@@ -229,14 +229,6 @@ function openVideoDialog(videoUrl: string, videoLabel: string, brandName: string
   showVideoDialog.value = true
 }
 
-function closeVideoDialog() {
-  showVideoDialog.value = false
-  // 延迟清空currentVideo，等待dialog关闭动画完成
-  setTimeout(() => {
-    currentVideo.value = null
-  }, 300)
-}
-
 onMounted(() => {
   window.addEventListener('scroll', handleScroll, { passive: true })
 })

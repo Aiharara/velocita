@@ -134,9 +134,6 @@ import ProductFeatures from '@/views/home/ProductFeatures.vue'
 import ModiGuide from '@/views/home/ModiGuide.vue'
 
 const videoRef = ref<HTMLVideoElement | null>(null)
-const videoContainerRef = ref<HTMLElement | null>(null)
-const heroContentRef = ref<HTMLElement | null>(null)
-const contentRef = ref<HTMLElement | null>(null)
 const isPlaying = ref(false)
 const isVideoMuted = ref(true) // 视频默认静音
 const scrollY = ref(0)

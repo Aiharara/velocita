@@ -32,7 +32,7 @@
               v-bind="props.action"
               class="nav-link relative px-6 py-3 rounded-lg text-base font-medium tracking-wide text-white/70 hover:text-white transition-all duration-300 group"
               :href="item.to"
-              @click="(e: MouseEvent) => onNavClick(e, item)"
+              @click="(e: MouseEvent) => onNavClick(e, item as unknown as MenuItem)"
           >
             {{ item.label }}
             <!-- hover下划线 -->
@@ -70,9 +70,8 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import Menubar from 'primevue/menubar'
-import Button from 'primevue/button'
 
-type MenuItem = { label: string; to: string }
+interface MenuItem { label: string; to: string; [key: string]: unknown }
 
 const router = useRouter()
 
