@@ -45,10 +45,17 @@
           <!-- 封面图片 -->
           <div class="relative h-48 w-full bg-gradient-to-b from-white/5 to-transparent overflow-hidden">
             <img
+                v-if="!failedImages.has(guide.label)"
                 :src="`${MEDIA_BASE_URL}${guide.images[0]}`"
                 class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                 :alt="guide.label"
                 @error="handleImageError($event, guide.label)"
+            />
+            <MediaErrorFallback
+                v-else
+                title="Guide Image Unavailable"
+                message="Unable to load"
+                height="192px"
             />
             <!-- 图片遮罩 -->
             <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
@@ -107,6 +114,7 @@ import { useRouter } from 'vue-router'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import installationGuidesData from '@/assets/data/installation-guides.json'
+import MediaErrorFallback from '@/components/MediaErrorFallback.vue'
 import { MEDIA_CONFIG, getMediaUrl } from '@/config'
 
 gsap.registerPlugin(ScrollTrigger)
@@ -122,6 +130,7 @@ type Guide = {
 }
 
 const guides = ref<Guide[]>(installationGuidesData as Guide[])
+const failedImages = ref<Set<string>>(new Set())
 
 // 前4个作为预览
 const previewGuides = computed(() => guides.value.slice(0, 4))
@@ -129,8 +138,7 @@ const previewGuides = computed(() => guides.value.slice(0, 4))
 function handleImageError(event: Event, guideName: string) {
   const img = event.target as HTMLImageElement
   console.error(`安装指南图片加载失败 (${guideName}):`, img.src)
-  // 设置默认占位符背景
-  img.style.backgroundColor = 'rgba(255, 255, 255, 0.05)'
+  failedImages.value.add(guideName)
 }
 
 function openGuideDetail(guide: Guide) {
@@ -183,13 +191,6 @@ onMounted(() => {
     linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
     linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
   background-size: 40px 40px;
-}
-
-/* 噪点纹理 */
-.noise-texture {
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='2.5' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-  background-repeat: repeat;
-  background-size: 200px 200px;
 }
 
 /* 指南卡片 */

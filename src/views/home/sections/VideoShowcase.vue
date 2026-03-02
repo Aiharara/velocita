@@ -49,6 +49,7 @@
             <div class="relative aspect-video overflow-hidden bg-black/20 cursor-pointer" @click="openVideoDialog(data)">
               <!-- 视频元素作为缩略图 -->
               <video
+                  v-if="!failedVideos.has(index)"
                   :ref="el => setVideoRef(el, index)"
                   :id="`video-${index}`"
                   class="w-full h-full object-cover"
@@ -59,6 +60,12 @@
               >
                 <source :src="data.url" type="video/mp4" />
               </video>
+              <MediaErrorFallback
+                  v-else
+                  title="Video Unavailable"
+                  message="Unable to load video"
+                  height="auto"
+              />
 
               <!-- 渐变遮罩 -->
               <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent pointer-events-none"></div>
@@ -170,6 +177,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import videoGallery from '@/assets/data/video-gallery.json'
 import type { VideoGallery } from '@/types/video-gallery'
 import { getVideo, getBrandName } from '@/types/video-gallery'
+import MediaErrorFallback from '@/components/MediaErrorFallback.vue'
 import { eventBus } from '@/utils/eventBus'
 import { MEDIA_CONFIG, getMediaUrl, BREAKPOINTS, DATA_CONFIG } from '@/config'
 
@@ -237,6 +245,7 @@ const showVideoDialog = ref(false)
 const currentVideo = ref<VideoItem | null>(null)
 const videoRefs = new Map<number, HTMLVideoElement>()
 const windowWidth = ref(typeof window !== 'undefined' ? window.innerWidth : 1024)
+const failedVideos = ref<Set<number>>(new Set())
 
 // 根据屏幕宽度计算轮播图显示数量
 const carouselNumVisible = computed(() => {
@@ -267,7 +276,7 @@ function handleDialogVideoLoaded(event: Event) {
 
 function handleVideoError(index: number, event: Event) {
   console.error(`视频加载失败 (index: ${index}):`, event)
-  // 视频加载失败时，可选择处理（如显示占位符或重试逻辑）
+  failedVideos.value.add(index)
 }
 
 function openVideoDialog(video: VideoItem) {
@@ -313,13 +322,6 @@ onBeforeUnmount(() => {
     linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
     linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
   background-size: 40px 40px;
-}
-
-/* 噪点纹理 */
-.noise-texture {
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='2.5' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-  background-repeat: repeat;
-  background-size: 200px 200px;
 }
 
 /* 视频卡片 */

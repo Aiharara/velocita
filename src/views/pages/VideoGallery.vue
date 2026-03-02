@@ -1,14 +1,7 @@
 <template>
   <div class="relative bg-black text-white min-h-screen">
-    <!-- 返回按钮 - 左上角固定位置，滚动时消失 -->
-    <button
-        @click="goBack"
-        class="hidden md:flex fixed top-28 left-8 z-50 items-center gap-2 px-5 py-2.5 rounded-lg bg-gradient-to-r from-yellow-400 to-yellow-500 text-black font-semibold hover:from-yellow-300 hover:to-yellow-400 transition-all duration-300 hover:scale-105 shadow-lg shadow-yellow-500/25"
-        :style="{ opacity: backButtonOpacity, pointerEvents: scrollY > 200 ? 'none' : 'auto' }"
-    >
-      <i class="pi pi-arrow-left text-sm"></i>
-      <span>Back</span>
-    </button>
+    <!-- 返回按钮 -->
+    <BackButton :opacity="backButtonOpacity" :scroll-y="scrollY" @click="goBack" />
 
     <!-- 主内容 -->
     <div class="relative max-w-7xl mx-auto px-4 md:px-8 py-20">
@@ -170,6 +163,7 @@
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import Dialog from 'primevue/dialog'
+import BackButton from '@/components/BackButton.vue'
 import ServiceBanner from '@/components/ServiceBanner.vue'
 import videoGallery from '@/assets/data/video-gallery.json'
 import { MEDIA_CONFIG, getMediaUrl } from '@/config'

@@ -8,6 +8,7 @@
     >
       <!-- 背景视频 -->
       <video
+          v-if="!videoError"
           ref="videoRef"
           class="absolute inset-0 w-full h-full object-cover"
           autoplay
@@ -21,6 +22,15 @@
       >
         <source :src="heroVideoUrl" type="video/mp4" />
       </video>
+
+      <!-- 视频加载失败提示 -->
+      <div v-if="videoError" class="absolute inset-0 bg-gradient-to-br from-black/80 via-black/60 to-black/80 flex items-center justify-center">
+        <div class="text-center">
+          <i class="pi pi-exclamation-circle text-4xl text-red-400 mb-3"></i>
+          <p class="text-white/70 text-lg">Hero video unavailable</p>
+          <p class="text-white/40 text-sm mt-1">Please refresh the page</p>
+        </div>
+      </div>
 
       <!-- 暗化叠层 -->
       <div class="absolute inset-0 bg-linear-to-b from-black/30 via-transparent to-black/60 z-0 pointer-events-none"></div>
@@ -211,12 +221,5 @@ video {
     linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
     linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
   background-size: 40px 40px;
-}
-
-/* 噪点纹理 */
-.noise-texture {
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='2.5' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-  background-repeat: repeat;
-  background-size: 200px 200px;
 }
 </style>

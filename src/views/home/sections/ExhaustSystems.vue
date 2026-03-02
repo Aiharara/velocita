@@ -36,10 +36,17 @@
             <!-- 图片区域 -->
             <div class="relative h-72 w-full bg-gradient-to-b from-white/5 to-transparent overflow-hidden cursor-pointer" @click="openGallery(data)">
               <img
+                  v-if="!failedImages.has(data.modelLabel)"
                   :src="`${IMAGE_BASE_URL}${data.images[0]}`"
                   class="block w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                   :alt="data.modelLabel"
                   @error="handleImageError($event, data.modelLabel)"
+              />
+              <MediaErrorFallback
+                  v-else
+                  title="Product Image Unavailable"
+                  message="Unable to load image"
+                  height="288px"
               />
 
               <!-- 图片遮罩 -->
@@ -193,6 +200,7 @@ import Dialog from 'primevue/dialog'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import exhaustSystemData from '@/assets/data/exhaust-system.json'
+import MediaErrorFallback from '@/components/MediaErrorFallback.vue'
 import { MEDIA_CONFIG, getMediaUrl, BREAKPOINTS, DATA_CONFIG } from '@/config'
 
 gsap.registerPlugin(ScrollTrigger)
@@ -215,6 +223,7 @@ const showGallery = ref(false)
 const currentProduct = ref<Product | null>(null)
 const currentImageIndex = ref(0)
 const windowWidth = ref(typeof window !== 'undefined' ? window.innerWidth : 1024)
+const failedImages = ref<Set<string>>(new Set())
 
 // 根据屏幕宽度计算轮播图显示数量
 const carouselNumVisible = computed(() => {
@@ -240,8 +249,7 @@ function formatPrice(price: string): string {
 function handleImageError(event: Event, productName: string) {
   const img = event.target as HTMLImageElement
   console.error(`图片加载失败 (${productName}):`, img.src)
-  // 设置默认占位符背景颜色
-  img.style.backgroundColor = 'rgba(255, 255, 255, 0.05)'
+  failedImages.value.add(productName)
 }
 
 function openGallery(product: Product) {
@@ -311,13 +319,6 @@ onBeforeUnmount(() => {
     linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
     linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
   background-size: 40px 40px;
-}
-
-/* 噪点纹理 */
-.noise-texture {
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='2.5' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-  background-repeat: repeat;
-  background-size: 200px 200px;
 }
 
 /* 产品卡片 */
