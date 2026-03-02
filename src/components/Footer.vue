@@ -1,5 +1,5 @@
 <template>
-  <footer id="about" class="relative py-16 md:py-20 bg-black overflow-hidden">
+  <footer id="contact-us" class="relative py-16 md:py-20 bg-black overflow-hidden">
     <!-- Background Decoration -->
     <div class="absolute inset-0">
       <div class="absolute inset-0 bg-grid-pattern opacity-[0.01]"></div>
@@ -29,6 +29,7 @@
             <li><a href="#products" class="footer-link">Exhaust Products</a></li>
             <li><a href="#guide" class="footer-link">Installation Guide</a></li>
             <li><a href="#cases" class="footer-link">Case Videos</a></li>
+            <li><RouterLink to="/about" class="footer-link">About Us</RouterLink></li>
             <li><a href="#" class="footer-link">Warranty Policy</a></li>
           </ul>
         </div>
@@ -123,7 +124,7 @@ function triggerHighlight() {
 }
 
 function handleHashChange() {
-  if (route.hash === '#about' || window.location.hash === '#about') {
+  if (route.hash === '#contact-us' || window.location.hash === '#contact-us') {
     triggerHighlight()
   }
 }
@@ -134,7 +135,7 @@ function onHighlightContact() {
 
 onMounted(() => {
   // Check on initial load
-  if (route.hash === '#about') {
+  if (route.hash === '#contact-us') {
     setTimeout(triggerHighlight, 500)
   }
 

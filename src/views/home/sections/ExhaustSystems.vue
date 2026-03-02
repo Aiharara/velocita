@@ -39,6 +39,7 @@
                   :src="`${IMAGE_BASE_URL}${data.images[0]}`"
                   class="block w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                   :alt="data.modelLabel"
+                  @error="handleImageError($event, data.modelLabel)"
               />
 
               <!-- 图片遮罩 -->
@@ -234,6 +235,13 @@ function handleResize() {
 function formatPrice(price: string): string {
   const numPrice = parseFloat(price.replace(/,/g, ''))
   return numPrice.toLocaleString('en-US')
+}
+
+function handleImageError(event: Event, productName: string) {
+  const img = event.target as HTMLImageElement
+  console.error(`图片加载失败 (${productName}):`, img.src)
+  // 设置默认占位符背景颜色
+  img.style.backgroundColor = 'rgba(255, 255, 255, 0.05)'
 }
 
 function openGallery(product: Product) {

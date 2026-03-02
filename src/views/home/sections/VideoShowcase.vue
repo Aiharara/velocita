@@ -55,6 +55,7 @@
                   muted
                   preload="none"
                   :poster="data.poster"
+                  @error="handleVideoError(index, $event)"
               >
                 <source :src="data.url" type="video/mp4" />
               </video>
@@ -262,6 +263,11 @@ function handleDialogVideoLoaded(event: Event) {
   const video = event.target as HTMLVideoElement
   // 弹窗播放时从第0秒开始，确保用户不错过任何内容
   video.currentTime = 0
+}
+
+function handleVideoError(index: number, event: Event) {
+  console.error(`视频加载失败 (index: ${index}):`, event)
+  // 视频加载失败时，可选择处理（如显示占位符或重试逻辑）
 }
 
 function openVideoDialog(video: VideoItem) {

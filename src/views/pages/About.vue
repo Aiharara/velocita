@@ -1,10 +1,5 @@
 <template>
   <div class="relative bg-black text-white min-h-screen">
-    <!-- NavBar -->
-    <div class="sticky top-0 z-40">
-      <NavBar :show-back-button="true" />
-    </div>
-
     <!-- 返回按钮 - 左上角固定位置，滚动时消失 -->
     <button
         @click="goBack"
@@ -121,154 +116,21 @@
 
         <!-- 历史时间线 -->
         <div class="max-w-4xl mx-auto space-y-10">
-          <!-- 2002 -->
-          <div class="timeline-item">
+          <div
+              v-for="(item, index) in timelineItems"
+              :key="index"
+              class="timeline-item"
+          >
             <div class="flex items-start gap-6">
               <div class="flex-shrink-0">
                 <div class="w-20 h-20 rounded-full bg-gradient-to-br from-yellow-400/30 to-yellow-500/30 border-2 border-yellow-400/50 flex items-center justify-center">
-                  <span class="text-yellow-400 font-bold text-lg">2002</span>
+                  <span class="text-yellow-400 font-bold text-lg">{{ item.year }}</span>
                 </div>
               </div>
               <div class="flex-1 pt-3">
-                <h3 class="text-xl font-semibold text-white mb-3">The Birth of Velocita Exhaust</h3>
+                <h3 class="text-xl font-semibold text-white mb-3">{{ item.title }}</h3>
                 <p class="text-white/70 leading-relaxed">
-                  At the turn of the millennium in 2002, a group of automotive modification enthusiasts founded the VE-Velocita Exhaust brand in Shanghai, known as "China's Industrial Hub." With aspirations to make their mark in the automotive exhaust industry, they aimed to meet domestic high-performance exhaust upgrade demands while expanding into international markets. In the first year, the V team introduced advanced technologies from Germany and the US, and imported original exhaust manufacturing equipment from Turin, Italy, thus beginning their journey of excellence. 2002 became known as "Year V."
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <!-- 2003 -->
-          <div class="timeline-item">
-            <div class="flex items-start gap-6">
-              <div class="flex-shrink-0">
-                <div class="w-20 h-20 rounded-full bg-gradient-to-br from-yellow-400/30 to-yellow-500/30 border-2 border-yellow-400/50 flex items-center justify-center">
-                  <span class="text-yellow-400 font-bold text-lg">2003</span>
-                </div>
-              </div>
-              <div class="flex-1 pt-3">
-                <h3 class="text-xl font-semibold text-white mb-3">Overcoming Challenges</h3>
-                <p class="text-white/70 leading-relaxed">
-                  Like any new venture, the V team faced significant challenges. Industry competition and customer skepticism became obstacles to progress. Production-supply-sales imbalances and funding shortages occurred frequently. By late 2003, domestic and international markets shrank dramatically, threatening the company's survival and impacting employee compensation. Despite these difficulties, the V team never wavered, maintaining trust, support, and collaboration among team members.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <!-- 2004 -->
-          <div class="timeline-item">
-            <div class="flex items-start gap-6">
-              <div class="flex-shrink-0">
-                <div class="w-20 h-20 rounded-full bg-gradient-to-br from-yellow-400/30 to-yellow-500/30 border-2 border-yellow-400/50 flex items-center justify-center">
-                  <span class="text-yellow-400 font-bold text-lg">2004</span>
-                </div>
-              </div>
-              <div class="flex-1 pt-3">
-                <h3 class="text-xl font-semibold text-white mb-3">Strategic Transformation</h3>
-                <p class="text-white/70 leading-relaxed">
-                  A new direction emerged: "Research emerging market trends, build new production-supply-sales systems, and perfect high-end product quality." In Q1 2004, 80% of the V team visited competitive cities nationwide to understand market demands and competition dynamics. They identified customer needs intersections and updated service systems. By analyzing competition patterns and consolidating team wisdom, the V team decided to abandon their original model and develop a new strategy led by ten members with cutting-edge market insights.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <!-- 2005 -->
-          <div class="timeline-item">
-            <div class="flex items-start gap-6">
-              <div class="flex-shrink-0">
-                <div class="w-20 h-20 rounded-full bg-gradient-to-br from-yellow-400/30 to-yellow-500/30 border-2 border-yellow-400/50 flex items-center justify-center">
-                  <span class="text-yellow-400 font-bold text-lg">2005</span>
-                </div>
-              </div>
-              <div class="flex-1 pt-3">
-                <h3 class="text-xl font-semibold text-white mb-3">Breaking Through</h3>
-                <p class="text-white/70 leading-relaxed">
-                  The V team successfully overcame development obstacles and entered the industry fast track.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <!-- 2008 -->
-          <div class="timeline-item">
-            <div class="flex items-start gap-6">
-              <div class="flex-shrink-0">
-                <div class="w-20 h-20 rounded-full bg-gradient-to-br from-yellow-400/30 to-yellow-500/30 border-2 border-yellow-400/50 flex items-center justify-center">
-                  <span class="text-yellow-400 font-bold text-lg">2008</span>
-                </div>
-              </div>
-              <div class="flex-1 pt-3">
-                <h3 class="text-xl font-semibold text-white mb-3">Entering Luxury Market</h3>
-                <p class="text-white/70 leading-relaxed">
-                  Expanded into high-end vehicle exhaust system upgrades for Porsche, Ferrari, Mercedes-Benz, BMW, Land Rover, and other premium brands.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <!-- 2012 -->
-          <div class="timeline-item">
-            <div class="flex items-start gap-6">
-              <div class="flex-shrink-0">
-                <div class="w-20 h-20 rounded-full bg-gradient-to-br from-yellow-400/30 to-yellow-500/30 border-2 border-yellow-400/50 flex items-center justify-center">
-                  <span class="text-yellow-400 font-bold text-lg">2012</span>
-                </div>
-              </div>
-              <div class="flex-1 pt-3">
-                <h3 class="text-xl font-semibold text-white mb-3">10th Anniversary Milestone</h3>
-                <p class="text-white/70 leading-relaxed">
-                  Celebrating a decade of excellence, Velocita officially launched its partnership history, continuing to grow and evolve.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <!-- 2016 -->
-          <div class="timeline-item">
-            <div class="flex items-start gap-6">
-              <div class="flex-shrink-0">
-                <div class="w-20 h-20 rounded-full bg-gradient-to-br from-yellow-400/30 to-yellow-500/30 border-2 border-yellow-400/50 flex items-center justify-center">
-                  <span class="text-yellow-400 font-bold text-lg">2016</span>
-                </div>
-              </div>
-              <div class="flex-1 pt-3">
-                <h3 class="text-xl font-semibold text-white mb-3">System Integration</h3>
-                <p class="text-white/70 leading-relaxed">
-                  Upgraded the production-supply-sales system, promoting integrated operations to make V performance exhausts more accessible to enthusiasts worldwide.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <!-- 2018 -->
-          <div class="timeline-item">
-            <div class="flex items-start gap-6">
-              <div class="flex-shrink-0">
-                <div class="w-20 h-20 rounded-full bg-gradient-to-br from-yellow-400/30 to-yellow-500/30 border-2 border-yellow-400/50 flex items-center justify-center">
-                  <span class="text-yellow-400 font-bold text-lg">2018</span>
-                </div>
-              </div>
-              <div class="flex-1 pt-3">
-                <h3 class="text-xl font-semibold text-white mb-3">Quality Enhancement</h3>
-                <p class="text-white/70 leading-relaxed">
-                  VE high-performance exhaust systems underwent comprehensive upgrades, achieving significant improvements in both aesthetics and craftsmanship with "stunning appearance, precision engineering" as the hallmark.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <!-- 2019+ -->
-          <div class="timeline-item">
-            <div class="flex items-start gap-6">
-              <div class="flex-shrink-0">
-                <div class="w-20 h-20 rounded-full bg-gradient-to-br from-yellow-400/30 to-yellow-500/30 border-2 border-yellow-400/50 flex items-center justify-center">
-                  <span class="text-yellow-400 font-bold text-lg">Now</span>
-                </div>
-              </div>
-              <div class="flex-1 pt-3">
-                <h3 class="text-xl font-semibold text-white mb-3">Your Story Begins</h3>
-                <p class="text-white/70 leading-relaxed">
-                  Today, Velocita continues to push the boundaries of high-performance exhaust technology. We're ready to craft the perfect exhaust solution for your vehicle. Your journey with Velocita awaits.
+                  {{ item.description }}
                 </p>
               </div>
             </div>
@@ -290,7 +152,6 @@
 
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
-import NavBar from '@/components/NavBar.vue'
 import { MEDIA_CONFIG, getMediaUrl } from '@/config'
 import { useScroll, useBackButtonOpacity } from '@/composables/useScroll'
 
@@ -298,6 +159,60 @@ const router = useRouter()
 const MEDIA_BASE_URL = `${getMediaUrl(MEDIA_CONFIG.PATHS.IMAGES)}/about-us/`
 const scrollY = useScroll()
 const backButtonOpacity = useBackButtonOpacity(scrollY)
+
+interface TimelineItem {
+  year: string | number
+  title: string
+  description: string
+}
+
+const timelineItems: TimelineItem[] = [
+  {
+    year: 2002,
+    title: 'The Birth of Velocita Exhaust',
+    description: 'At the turn of the millennium in 2002, a group of automotive modification enthusiasts founded the VE-Velocita Exhaust brand in Shanghai, known as "China\'s Industrial Hub." With aspirations to make their mark in the automotive exhaust industry, they aimed to meet domestic high-performance exhaust upgrade demands while expanding into international markets. In the first year, the V team introduced advanced technologies from Germany and the US, and imported original exhaust manufacturing equipment from Turin, Italy, thus beginning their journey of excellence. 2002 became known as "Year V."'
+  },
+  {
+    year: 2003,
+    title: 'Overcoming Challenges',
+    description: 'Like any new venture, the V team faced significant challenges. Industry competition and customer skepticism became obstacles to progress. Production-supply-sales imbalances and funding shortages occurred frequently. By late 2003, domestic and international markets shrank dramatically, threatening the company\'s survival and impacting employee compensation. Despite these difficulties, the V team never wavered, maintaining trust, support, and collaboration among team members.'
+  },
+  {
+    year: 2004,
+    title: 'Strategic Transformation',
+    description: 'A new direction emerged: "Research emerging market trends, build new production-supply-sales systems, and perfect high-end product quality." In Q1 2004, 80% of the V team visited competitive cities nationwide to understand market demands and competition dynamics. They identified customer needs intersections and updated service systems. By analyzing competition patterns and consolidating team wisdom, the V team decided to abandon their original model and develop a new strategy led by ten members with cutting-edge market insights.'
+  },
+  {
+    year: 2005,
+    title: 'Breaking Through',
+    description: 'The V team successfully overcame development obstacles and entered the industry fast track.'
+  },
+  {
+    year: 2008,
+    title: 'Entering Luxury Market',
+    description: 'Expanded into high-end vehicle exhaust system upgrades for Porsche, Ferrari, Mercedes-Benz, BMW, Land Rover, and other premium brands.'
+  },
+  {
+    year: 2012,
+    title: '10th Anniversary Milestone',
+    description: 'Celebrating a decade of excellence, Velocita officially launched its partnership history, continuing to grow and evolve.'
+  },
+  {
+    year: 2016,
+    title: 'System Integration',
+    description: 'Upgraded the production-supply-sales system, promoting integrated operations to make V performance exhausts more accessible to enthusiasts worldwide.'
+  },
+  {
+    year: 2018,
+    title: 'Quality Enhancement',
+    description: 'VE high-performance exhaust systems underwent comprehensive upgrades, achieving significant improvements in both aesthetics and craftsmanship with "stunning appearance, precision engineering" as the hallmark.'
+  },
+  {
+    year: 'Now',
+    title: 'Your Story Begins',
+    description: 'Today, Velocita continues to push the boundaries of high-performance exhaust technology. We\'re ready to craft the perfect exhaust solution for your vehicle. Your journey with Velocita awaits.'
+  }
+]
 
 function goBack() {
   router.push('/')

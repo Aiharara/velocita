@@ -84,16 +84,17 @@ defineProps<{
 const items = ref<MenuItem[]>([
   { label: 'Home', to: '/' },
   { label: 'Video Gallery', to: '/video-gallery' },
+  { label: 'About Us', to: '/about' },
   { label: 'Products', to: '/#products' },
   { label: 'Guide', to: '/guides' },
-  { label: 'Contact Us', to: '/#about' },
+  { label: 'Contact Us', to: '/#contact-us' },
 ])
 
 function onNavClick(_e: MouseEvent, item: MenuItem) {
   // Use router.push to ensure scrollBehavior is invoked correctly
   router.push(item.to).then(() => {
-    // After navigation completes, emit highlight-contact if navigating to about
-    if (item.to === '/#about') {
+    // After navigation completes, emit highlight-contact if navigating to contact-us
+    if (item.to === '/#contact-us') {
       eventBus.emit('highlight-contact')
     }
   })

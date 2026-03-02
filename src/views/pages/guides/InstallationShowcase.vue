@@ -1,11 +1,6 @@
 <!-- views/pages/guides/InstallationShowcase.vue -->
 <template>
   <div class="relative bg-black text-white min-h-screen">
-    <!-- NavBar -->
-    <div class="sticky top-0 z-40">
-      <NavBar :show-back-button="true" />
-    </div>
-
     <!-- 返回按钮 - 左上角固定位置，滚动时消失 -->
     <button
         @click="goBack"
@@ -113,7 +108,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import NavBar from '@/components/NavBar.vue'
 import ServiceBanner from '@/components/ServiceBanner.vue'
 import installationGuidesData from '@/assets/data/installation-guides.json'
 import { MEDIA_CONFIG, getMediaUrl } from '@/config'

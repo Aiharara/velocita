@@ -48,6 +48,7 @@
                 :src="`${MEDIA_BASE_URL}${guide.images[0]}`"
                 class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                 :alt="guide.label"
+                @error="handleImageError($event, guide.label)"
             />
             <!-- 图片遮罩 -->
             <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
@@ -124,6 +125,13 @@ const guides = ref<Guide[]>(installationGuidesData as Guide[])
 
 // 前4个作为预览
 const previewGuides = computed(() => guides.value.slice(0, 4))
+
+function handleImageError(event: Event, guideName: string) {
+  const img = event.target as HTMLImageElement
+  console.error(`安装指南图片加载失败 (${guideName}):`, img.src)
+  // 设置默认占位符背景
+  img.style.backgroundColor = 'rgba(255, 255, 255, 0.05)'
+}
 
 function openGuideDetail(guide: Guide) {
   // 在新标签页打开详情页

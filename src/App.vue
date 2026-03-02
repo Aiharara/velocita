@@ -1,5 +1,14 @@
 <template>
   <div class="main-entry">
+    <!-- 全局导航栏 - 首页固定+淡出效果，其他页面sticky+返回按钮 -->
+    <div
+        :class="isHomePage ? 'fixed' : 'sticky'"
+        class="top-0 left-0 right-0 z-40 transition-opacity duration-500"
+        :style="{ opacity: isHomePage ? navOpacity : 1 }"
+    >
+      <NavBar :show-back-button="!isHomePage" />
+    </div>
+
     <RouterView v-slot="{ Component }">
       <Transition name="page" mode="out-in">
         <component :is="Component" />
@@ -10,7 +19,20 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue'
+import { useRouter } from 'vue-router'
 import Footer from '@/components/Footer.vue'
+import NavBar from '@/components/NavBar.vue'
+import { useScroll, useNavBarOpacity } from '@/composables/useScroll'
+
+const router = useRouter()
+const scrollY = useScroll()
+
+// 判断是否在首页
+const isHomePage = computed(() => router.currentRoute.value.name === 'home')
+
+// 首页NavBar根据滚动透明度变化
+const navOpacity = useNavBarOpacity(scrollY, typeof window !== 'undefined' ? window.innerHeight : 1000)
 </script>
 
 <style>

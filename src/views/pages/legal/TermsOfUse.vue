@@ -1,10 +1,5 @@
 <template>
   <div class="relative bg-black text-white min-h-screen">
-    <!-- NavBar -->
-    <div class="sticky top-0 z-40">
-      <NavBar :show-back-button="true" />
-    </div>
-
     <!-- 返回按钮 - 左上角固定位置，滚动时消失 -->
     <button
         @click="goBack"
@@ -139,7 +134,6 @@
 
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
-import NavBar from '@/components/NavBar.vue'
 import { eventBus } from '@/utils/eventBus'
 import { useScroll, useBackButtonOpacity } from '@/composables/useScroll'
 
