@@ -26,13 +26,13 @@ import NavBar from '@/components/NavBar.vue'
 import { useScroll, useNavBarOpacity } from '@/composables/useScroll'
 
 const router = useRouter()
-const scrollY = useScroll()
+const { scrollY, windowHeight } = useScroll()
 
 // 判断是否在首页
 const isHomePage = computed(() => router.currentRoute.value.name === 'home')
 
-// 首页NavBar根据滚动透明度变化
-const navOpacity = useNavBarOpacity(scrollY, typeof window !== 'undefined' ? window.innerHeight : 1000)
+// 首页 NavBar 根据滚动透明度变化
+const navOpacity = useNavBarOpacity(scrollY, windowHeight.value)
 </script>
 
 <style>

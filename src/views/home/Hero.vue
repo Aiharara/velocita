@@ -72,9 +72,10 @@ const isVideoMuted = ref(true)
 const videoLoading = ref(false)
 const videoError = ref(false)
 const audioError = ref(false)
-const scrollY = useScroll()
+const { scrollY: scrollYRef, windowHeight: windowHeightRef } = useScroll()
+const scrollY = scrollYRef
 const window = ref({
-  innerHeight: typeof globalThis.window !== 'undefined' ? globalThis.window.innerHeight : 1000
+  innerHeight: windowHeightRef.value
 })
 
 let audioElement: HTMLAudioElement | null = null
@@ -184,42 +185,8 @@ onBeforeUnmount(() => {
 </script>
 
 <style scoped>
-/* 自定义动画 */
-@keyframes bounce {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
-}
-
-.animate-bounce {
-  animation: bounce 2s infinite;
-}
-
-/* Ping动画 */
-@keyframes ping {
-  75%, 100% {
-    transform: scale(2);
-    opacity: 0;
-  }
-}
-
-.animate-ping {
-  animation: ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;
-}
-
 /* 视频优化 */
 video {
   filter: contrast(1.1) brightness(0.9);
-}
-
-/* 网格背景 */
-.bg-grid-pattern {
-  background-image:
-    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-  background-size: 40px 40px;
 }
 </style>

@@ -140,31 +140,3 @@ function playExhaustSound() {
   emit('play-exhaust-sound')
 }
 </script>
-
-<style scoped>
-/* 自定义动画 */
-@keyframes bounce {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
-}
-
-.animate-bounce {
-  animation: bounce 2s infinite;
-}
-
-/* Ping动画 */
-@keyframes ping {
-  75%, 100% {
-    transform: scale(2);
-    opacity: 0;
-  }
-}
-
-.animate-ping {
-  animation: ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;
-}
-</style>

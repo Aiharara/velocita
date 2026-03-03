@@ -1,7 +1,7 @@
 <!-- views/pages/guides/InstallationShowcase.vue -->
 <template>
   <div class="relative bg-black text-white min-h-screen">
-    <!-- 返回按钮 - 左上角固定位置，滚动时消失 -->
+    <!-- Back button - 固定在左上角，滚动时隐藏 -->
     <button
         @click="goBack"
         class="hidden md:flex fixed top-28 left-8 z-50 items-center gap-2 px-5 py-2.5 rounded-lg bg-gradient-to-r from-yellow-400 to-yellow-500 text-black font-semibold hover:from-yellow-300 hover:to-yellow-400 transition-all duration-300 hover:scale-105 shadow-lg shadow-yellow-500/25"
@@ -11,7 +11,7 @@
       <span>Back</span>
     </button>
 
-    <!-- 主内容 -->
+    <!-- 主内容区域 -->
     <div class="relative max-w-7xl mx-auto px-4 md:px-8 py-20">
       <!-- 页面标题 -->
       <div class="mb-12 flex-col-center">
@@ -30,7 +30,7 @@
       <!-- Notice -->
       <ServiceBanner />
 
-      <!-- Main Content -->
+      <!-- 主要内容 -->
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         <article
             v-for="(guide, index) in guides"
@@ -51,7 +51,7 @@
             <!-- 图片遮罩 -->
             <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
 
-            <!-- 媒体计数 -->
+            <!-- 媒体数量 -->
             <div class="absolute top-3 right-3 flex gap-2">
               <span v-if="guide.videos.length > 0" class="text-[10px] px-2 py-0.5 rounded-md bg-black/60 backdrop-blur-md border border-white/20 text-white/90 font-medium">
                 <i class="pi pi-video text-[9px] mr-1"></i>
@@ -63,7 +63,7 @@
               </span>
             </div>
 
-            <!-- hover显示的查看提示 -->
+            <!-- Hover 显示查看提示 -->
             <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500">
               <div class="p-3 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white">
                 <i class="pi pi-eye text-lg"></i>
@@ -97,24 +97,18 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import ServiceBanner from '@/components/ServiceBanner.vue'
 import installationGuidesData from '@/assets/data/installation-guides.json'
 import { MEDIA_CONFIG, getMediaUrl } from '@/config'
 import { useScroll, useBackButtonOpacity } from '@/composables/useScroll'
+import type { Guide } from '@/types/guide'
 
 const router = useRouter()
-const MEDIA_BASE_URL = `${getMediaUrl(MEDIA_CONFIG.PATHS.INSTALLATION_GUIDES)}/`
-const scrollY = useScroll()
+const MEDIA_BASE_URL = computed(() => `${getMediaUrl(MEDIA_CONFIG.PATHS.INSTALLATION_GUIDES)}/`)
+const { scrollY } = useScroll()
 const backButtonOpacity = useBackButtonOpacity(scrollY)
-
-type Guide = {
-  label: string
-  folder_path: string
-  images: string[]
-  videos: string[]
-}
 
 const guides = ref<Guide[]>(installationGuidesData as Guide[])
 
@@ -145,34 +139,5 @@ function openGuideDetail(guide: Guide) {
 .guide-card {
   position: relative;
   overflow: hidden;
-}
-
-/* 微光效果 */
-.shimmer-effect {
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 50%;
-  height: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.05),
-    transparent
-  );
-  pointer-events: none;
-}
-
-.guide-card:hover .shimmer-effect {
-  animation: shimmer 1.5s ease-in-out;
-}
-
-@keyframes shimmer {
-  0% {
-    left: -100%;
-  }
-  100% {
-    left: 200%;
-  }
 }
 </style>

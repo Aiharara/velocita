@@ -1,7 +1,7 @@
 <template>
   <div class="relative bg-black text-white min-h-screen">
     <!-- 返回按钮 -->
-    <BackButton :opacity="backButtonOpacity" :scroll-y="scrollY" @click="goBack" />
+    <BackButton :opacity="backButtonOpacity" :scroll-y="scrollY" :on-click="goBack" />
 
     <!-- 主内容 -->
     <div class="relative max-w-7xl mx-auto px-4 md:px-8 py-20">
@@ -160,11 +160,11 @@ import videoGallery from '@/assets/data/video-gallery.json'
 import { MEDIA_CONFIG, getMediaUrl } from '@/config'
 import { useScroll, useBackButtonOpacity } from '@/composables/useScroll'
 
-const VIDEO_BASE_URL = `${getMediaUrl(MEDIA_CONFIG.PATHS.VIDEOS)}`
+const VIDEO_BASE_URL = computed(() => `${getMediaUrl(MEDIA_CONFIG.PATHS.VIDEOS)}`)
 const router = useRouter()
 
 const selectedBrand = ref<string | null>(null)
-const scrollY = useScroll()
+const { scrollY } = useScroll()
 const backButtonOpacity = useBackButtonOpacity(scrollY)
 const showVideoDialog = ref(false)
 const currentVideo = ref<{ url: string; label: string; brandName: string } | null>(null)
@@ -200,68 +200,9 @@ function openVideoDialog(videoUrl: string, videoLabel: string, brandName: string
 </script>
 
 <style scoped>
-/* 工具类 */
-.flex-col-center {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-}
-
 /* 视频卡片 */
 .video-card {
   position: relative;
   overflow: hidden;
-}
-
-/* 微光效果 */
-.shimmer-effect {
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 50%;
-  height: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.05),
-    transparent
-  );
-  pointer-events: none;
-}
-
-.video-card:hover .shimmer-effect {
-  animation: shimmer 1.5s ease-in-out;
-}
-
-@keyframes shimmer {
-  0% {
-    left: -100%;
-  }
-  100% {
-    left: 200%;
-  }
-}
-
-/* 视频弹窗样式 */
-:deep(.video-dialog .p-dialog-header) {
-  padding: 1.5rem !important;
-}
-
-:deep(.video-dialog .p-dialog-content) {
-  padding: 0 !important;
-}
-
-:deep(.video-dialog .p-dialog-header-close) {
-  color: rgba(255, 255, 255, 0.7) !important;
-  width: 2.5rem !important;
-  height: 2.5rem !important;
-  border-radius: 0.5rem !important;
-  transition: all 0.3s !important;
-}
-
-:deep(.video-dialog .p-dialog-header-close:hover) {
-  background: rgba(250, 204, 21, 0.2) !important;
-  color: rgba(250, 204, 21, 0.9) !important;
 }
 </style>

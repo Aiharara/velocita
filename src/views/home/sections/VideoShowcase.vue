@@ -184,7 +184,9 @@ import { MEDIA_CONFIG, getMediaUrl, BREAKPOINTS, DATA_CONFIG } from '@/config'
 gsap.registerPlugin(ScrollTrigger)
 
 const router = useRouter()
-const VIDEO_BASE_URL = `${getMediaUrl(MEDIA_CONFIG.PATHS.VIDEOS)}`
+
+// 视频基础路径 - 使用 computed 响应式获取
+const VIDEO_BASE_URL = computed(() => `${getMediaUrl(MEDIA_CONFIG.PATHS.VIDEOS)}`)
 
 type VideoItem = {
   url: string
@@ -228,12 +230,12 @@ const buildVideos = (): VideoItem[] => {
       }
 
       return {
-        url: `${VIDEO_BASE_URL}${video.url}`,
+        url: `${VIDEO_BASE_URL.value}${video.url}`,
         title: `${brandName} ${video.label}`,
         subtitle: config.subtitle,
         tag: config.tag,
         brand: brandName,
-        poster: `${VIDEO_BASE_URL}${video.poster}`
+        poster: `${VIDEO_BASE_URL.value}${video.poster}`
       }
     })
     .filter((item): item is VideoItem => item !== null)
@@ -316,14 +318,6 @@ onBeforeUnmount(() => {
 </script>
 
 <style scoped>
-/* 网格背景 */
-.bg-grid-pattern {
-  background-image:
-    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-  background-size: 40px 40px;
-}
-
 /* 视频卡片 */
 .video-card {
   position: relative;
@@ -337,132 +331,5 @@ onBeforeUnmount(() => {
 
 .video-card:hover video {
   transform: scale(1.08);
-}
-
-/* 微光效果 */
-.shimmer-effect {
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 50%;
-  height: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.05),
-    transparent
-  );
-  pointer-events: none;
-}
-
-.video-card:hover .shimmer-effect {
-  animation: shimmer 1.5s ease-in-out;
-}
-
-@keyframes shimmer {
-  0% {
-    left: -100%;
-  }
-  100% {
-    left: 200%;
-  }
-}
-
-/* PrimeVue Carousel样式优化 */
-:deep(.p-carousel .p-carousel-indicators .p-carousel-indicator button) {
-  background: rgba(255, 255, 255, 0.15);
-  border-radius: 50%;
-  transition: all 0.3s;
-}
-
-:deep(.p-carousel .p-carousel-indicators .p-carousel-indicator button:hover) {
-  background: rgba(250, 204, 21, 0.5);
-}
-
-:deep(.p-carousel .p-carousel-indicators .p-carousel-indicator.p-highlight button) {
-  background: rgba(250, 204, 21, 0.9);
-}
-
-/* 轮播图按钮样式 - 仅在平板及以上设备显示（手机端包括横屏都隐藏） */
-@media (min-width: 768px) {
-  /* 轮播图按钮 - 基础样式 */
-  :deep(.p-carousel .p-carousel-prev-button) {
-    padding: 80px 10px 80px 30px !important;
-  }
-
-  :deep(.p-carousel .p-carousel-next-button) {
-    padding: 80px 30px 80px 10px !important;
-  }
-
-  :deep(.p-carousel .p-carousel-prev-button),
-  :deep(.p-carousel .p-carousel-next-button) {
-    border-radius: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 2;
-  }
-
-  /* 按钮内图标大小 */
-  :deep(.p-carousel .p-carousel-prev-button .p-icon),
-  :deep(.p-carousel .p-carousel-next-button .p-icon) {
-    font-size: 1.5rem;
-  }
-
-  /* 左按钮位置 */
-  :deep(.p-carousel .p-carousel-prev) {
-    left: 20px !important;
-  }
-
-  /* 右按钮位置 */
-  :deep(.p-carousel .p-carousel-next) {
-    right: 20px !important;
-  }
-
-  /* 左按钮悬停 - 光源从中心向左扩散 */
-  :deep(.p-carousel .p-carousel-prev-button:hover) {
-    background-image:
-      /* 主光斑：不贴边，中心亮，向外柔和消失 */
-        radial-gradient(
-            120% 70% at 70% 50%,
-            rgba(250, 204, 21, 0.55) 0%,
-            rgba(250, 204, 21, 0.22) 28%,
-            rgba(250, 204, 21, 0.10) 45%,
-            rgba(250, 204, 21, 0.00) 68%
-        )!important;
-  }
-
-  /* 右按钮悬停 - 光源从中心向右扩散 */
-  :deep(.p-carousel .p-carousel-next-button:hover) {
-    background: radial-gradient(
-        120% 70% at 30% 50%,
-        rgba(250, 204, 21, 0.55) 0%,
-        rgba(250, 204, 21, 0.22) 28%,
-        rgba(250, 204, 21, 0.10) 45%,
-        rgba(250, 204, 21, 0.00) 68%
-    )!important;
-  }
-}
-
-/* 视频弹窗样式 */
-:deep(.video-dialog .p-dialog-header) {
-  padding: 1.5rem !important;
-}
-
-:deep(.video-dialog .p-dialog-content) {
-  padding: 0 !important;
-}
-
-:deep(.video-dialog .p-dialog-header-close) {
-  color: rgba(255, 255, 255, 0.7) !important;
-  width: 2.5rem !important;
-  height: 2.5rem !important;
-  border-radius: 0.5rem !important;
-  transition: all 0.3s !important;
-}
-
-:deep(.video-dialog .p-dialog-header-close:hover) {
-  background: rgba(250, 204, 21, 0.2) !important;
-  color: rgba(250, 204, 21, 0.9) !important;
 }
 </style>

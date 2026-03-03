@@ -1,14 +1,11 @@
 <template>
   <div class="relative bg-black text-white min-h-screen">
-    <!-- 返回按钮 - 左上角固定位置，滚动时消失 -->
-    <button
-        @click="goBack"
-        class="hidden md:flex fixed top-28 left-8 z-50 items-center gap-2 px-5 py-2.5 rounded-lg bg-gradient-to-r from-yellow-400 to-yellow-500 text-black font-semibold hover:from-yellow-300 hover:to-yellow-400 transition-all duration-300 hover:scale-105 shadow-lg shadow-yellow-500/25"
-        :style="{ opacity: backButtonOpacity, pointerEvents: scrollY > 200 ? 'none' : 'auto' }"
-    >
-      <i class="pi pi-arrow-left text-sm"></i>
-      <span>Back</span>
-    </button>
+    <!-- 返回按钮 -->
+    <BackButton
+        :opacity="backButtonOpacity"
+        :scroll-y="scrollY"
+        :on-click="goBack"
+    />
 
     <!-- 主内容 -->
     <div class="relative max-w-4xl mx-auto px-4 md:px-8 py-20">
@@ -134,11 +131,12 @@
 
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
+import BackButton from '@/components/BackButton.vue'
 import { eventBus } from '@/utils/eventBus'
 import { useScroll, useBackButtonOpacity } from '@/composables/useScroll'
 
 const router = useRouter()
-const scrollY = useScroll()
+const { scrollY } = useScroll()
 const backButtonOpacity = useBackButtonOpacity(scrollY)
 
 function goBack() {
@@ -153,10 +151,3 @@ function triggerContact() {
   })
 }
 </script>
-
-<style scoped>
-.prose h2 {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  padding-bottom: 0.5rem;
-}
-</style>

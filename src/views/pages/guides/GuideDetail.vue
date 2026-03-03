@@ -194,16 +194,10 @@ import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
 import { useRoute } from 'vue-router'
 import installationGuidesData from '@/assets/data/installation-guides.json'
 import { MEDIA_CONFIG, getMediaUrl } from '@/config'
+import type { Guide } from '@/types/guide'
 
 const route = useRoute()
 const MEDIA_BASE_URL = `${getMediaUrl(MEDIA_CONFIG.PATHS.INSTALLATION_GUIDES)}/`
-
-type Guide = {
-  label: string
-  folder_path: string
-  images: string[]
-  videos: string[]
-}
 
 const guides = ref<Guide[]>(installationGuidesData as Guide[])
 const showImageViewer = ref(false)
@@ -214,6 +208,11 @@ const currentGuide = computed(() => {
   return guides.value.find(g => g.folder_path === folder)
 })
 
+/**
+ * 关闭当前页面
+ * 注意：此页面是通过 window.open() 在新标签页打开的，
+ * 所以使用 window.close() 来关闭标签页返回上一个页面
+ */
 function goBack() {
   window.close()
 }
@@ -264,33 +263,5 @@ onBeforeUnmount(() => {
 </script>
 
 <style scoped>
-/* 滚动条样式 */
-.overflow-x-auto::-webkit-scrollbar {
-  height: 6px;
-}
-
-.overflow-x-auto::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 3px;
-}
-
-.overflow-x-auto::-webkit-scrollbar-thumb {
-  background: rgba(250, 204, 21, 0.3);
-  border-radius: 3px;
-}
-
-.overflow-x-auto::-webkit-scrollbar-thumb:hover {
-  background: rgba(250, 204, 21, 0.5);
-}
-
-/* Fade transition */
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.3s ease;
-}
-
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-}
+/* 组件特定的样式可以写在这里 */
 </style>

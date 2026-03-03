@@ -1,5 +1,170 @@
 @import "tailwindcss";
 
+/* =====================
+   Shimmer Effect - 微光效果 (共用样式)
+   ===================== */
+.shimmer-effect {
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.05),
+    transparent
+  );
+  pointer-events: none;
+}
+
+.video-card:hover .shimmer-effect,
+.product-card:hover .shimmer-effect,
+.guide-card:hover .shimmer-effect {
+  animation: shimmer 1.5s ease-in-out;
+}
+
+@keyframes shimmer {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 200%;
+  }
+}
+
+/* =====================
+   Video Dialog - 视频弹窗样式 (共用样式)
+   ===================== */
+.video-dialog .p-dialog-header {
+  padding: 1.5rem !important;
+}
+
+.video-dialog .p-dialog-content {
+  padding: 0 !important;
+}
+
+.video-dialog .p-dialog-header-close {
+  color: rgba(255, 255, 255, 0.7) !important;
+  width: 2.5rem !important;
+  height: 2.5rem !important;
+  border-radius: 0.5rem !important;
+  transition: all 0.3s !important;
+}
+
+.video-dialog .p-dialog-header-close:hover {
+  background: rgba(250, 204, 21, 0.2) !important;
+  color: rgba(250, 204, 21, 0.9) !important;
+}
+
+/* =====================
+   PrimeVue Carousel - 轮播图样式 (共用样式)
+   ===================== */
+/* 指示器样式 */
+.p-carousel .p-carousel-indicators .p-carousel-indicator button {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 50%;
+  transition: all 0.3s;
+}
+
+.p-carousel .p-carousel-indicators .p-carousel-indicator button:hover {
+  background: rgba(250, 204, 21, 0.5);
+}
+
+.p-carousel .p-carousel-indicators .p-carousel-indicator.p-highlight button {
+  background: rgba(250, 204, 21, 0.9);
+}
+
+/* 轮播图按钮样式 - 仅在平板及以上设备显示 */
+@media (min-width: 768px) {
+  /* 轮播图按钮 - 基础样式 */
+  .p-carousel .p-carousel-prev-button {
+    padding: 80px 10px 80px 30px !important;
+  }
+
+  .p-carousel .p-carousel-next-button {
+    padding: 80px 30px 80px 10px !important;
+  }
+
+  .p-carousel .p-carousel-prev-button,
+  .p-carousel .p-carousel-next-button {
+    border-radius: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+  }
+
+  /* 按钮内图标大小 */
+  .p-carousel .p-carousel-prev-button .p-icon,
+  .p-carousel .p-carousel-next-button .p-icon {
+    font-size: 1.5rem;
+  }
+
+  /* 左按钮位置 */
+  .p-carousel .p-carousel-prev {
+    left: 20px !important;
+  }
+
+  /* 右按钮位置 */
+  .p-carousel .p-carousel-next {
+    right: 20px !important;
+  }
+
+  /* 左按钮悬停 - 光源从中心向左扩散 */
+  .p-carousel .p-carousel-prev-button:hover {
+    background-image:
+      radial-gradient(
+          120% 70% at 70% 50%,
+          rgba(250, 204, 21, 0.55) 0%,
+          rgba(250, 204, 21, 0.22) 28%,
+          rgba(250, 204, 21, 0.10) 45%,
+          rgba(250, 204, 21, 0.00) 68%
+      )!important;
+  }
+
+  /* 右按钮悬停 - 光源从中心向右扩散 */
+  .p-carousel .p-carousel-next-button:hover {
+    background: radial-gradient(
+        120% 70% at 30% 50%,
+        rgba(250, 204, 21, 0.55) 0%,
+        rgba(250, 204, 21, 0.22) 28%,
+        rgba(250, 204, 21, 0.10) 45%,
+        rgba(250, 204, 21, 0.00) 68%
+    )!important;
+  }
+}
+
+/* =====================
+   Bounce Animation - 弹跳动画 (共用样式)
+   ===================== */
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.animate-bounce {
+  animation: bounce 2s infinite;
+}
+
+/* =====================
+   Ping Animation -脉冲动画 (共用样式)
+   ===================== */
+@keyframes ping {
+  75%, 100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+.animate-ping {
+  animation: ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -74,4 +239,56 @@ button:hover {
   button {
     background-color: #f9f9f9;
   }
+}
+
+/* =====================
+   Scrollbar - 滚动条样式 (共用样式)
+   ===================== */
+.overflow-x-auto::-webkit-scrollbar {
+  height: 6px;
+}
+
+.overflow-x-auto::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 3px;
+}
+
+.overflow-x-auto::-webkit-scrollbar-thumb {
+  background: rgba(250, 204, 21, 0.3);
+  border-radius: 3px;
+}
+
+.overflow-x-auto::-webkit-scrollbar-thumb:hover {
+  background: rgba(250, 204, 21, 0.5);
+}
+
+/* =====================
+   Fade Transition - 淡入淡出动画 (共用样式)
+   ===================== */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+/* =====================
+   Flex Center - 居中布局
+   ===================== */
+.flex-col-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+/* =====================
+   Prose - 文章样式
+   ===================== */
+.prose h2 {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 0.5rem;
 }

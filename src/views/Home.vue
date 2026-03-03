@@ -20,39 +20,20 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
+import { computed } from 'vue'
 import Hero from '@/views/home/Hero.vue'
 import VideoShowcase from '@/views/home/sections/VideoShowcase.vue'
 import ExhaustSystems from '@/views/home/sections/ExhaustSystems.vue'
 import WhyChooseVelocita from '@/views/home/sections/WhyChooseVelocita.vue'
 import Guide from '@/views/home/sections/Guide.vue'
+import { useScroll } from '@/composables/useScroll'
 
-const scrollY = ref(0)
-const windowHeight = ref(typeof globalThis.window !== 'undefined' ? globalThis.window.innerHeight : 1000)
+const { windowHeight } = useScroll()
 
 // 主内容区域的上边距：固定值，避免滚动跳跃
 const contentMarginTop = computed(() => {
   const HOLD_DURATION = 0.5
-  // 固定在Hero完全消失的位置
+  // 固定在 Hero 完全消失的位置
   return windowHeight.value * (1.65 + HOLD_DURATION)
-})
-
-function handleScroll() {
-  scrollY.value = globalThis.window.scrollY
-}
-
-function handleResize() {
-  windowHeight.value = globalThis.window.innerHeight
-}
-
-onMounted(() => {
-  windowHeight.value = globalThis.window.innerHeight
-  globalThis.window.addEventListener('scroll', handleScroll, { passive: true })
-  globalThis.window.addEventListener('resize', handleResize, { passive: true })
-})
-
-onBeforeUnmount(() => {
-  globalThis.window.removeEventListener('scroll', handleScroll)
-  globalThis.window.removeEventListener('resize', handleResize)
 })
 </script>

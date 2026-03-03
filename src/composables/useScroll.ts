@@ -8,24 +8,32 @@ import { ANIMATION_CONFIG } from '@/config'
 
 /**
  * 通用滚动处理 hook
- * @returns 滚动距离ref
+ * @returns 滚动距离 ref（默认）或 { scrollY, windowHeight } 对象
  */
 export function useScroll() {
   const scrollY = ref(0)
+  const windowHeight = ref(typeof window !== 'undefined' ? window.innerHeight : 1000)
 
   const handleScroll = () => {
     scrollY.value = window.scrollY
   }
 
+  const handleResize = () => {
+    windowHeight.value = window.innerHeight
+  }
+
   onMounted(() => {
     window.addEventListener('scroll', handleScroll, { passive: true })
+    window.addEventListener('resize', handleResize, { passive: true })
   })
 
   onBeforeUnmount(() => {
     window.removeEventListener('scroll', handleScroll)
+    window.removeEventListener('resize', handleResize)
   })
 
-  return scrollY
+  // 返回对象形式，支持解构
+  return { scrollY, windowHeight }
 }
 
 /**

@@ -24,18 +24,3 @@ const props = withDefaults(defineProps<Props>(), {
 
 const visible = computed(() => props.scrollY < props.threshold)
 </script>
-
-<style scoped>
-@keyframes bounce {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
-}
-
-.animate-bounce {
-  animation: bounce 2s infinite;
-}
-</style>

@@ -116,18 +116,14 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import installationGuidesData from '@/assets/data/installation-guides.json'
 import MediaErrorFallback from '@/components/MediaErrorFallback.vue'
 import { MEDIA_CONFIG, getMediaUrl } from '@/config'
+import type { Guide } from '@/types/guide'
 
 gsap.registerPlugin(ScrollTrigger)
 
 const router = useRouter()
-const MEDIA_BASE_URL = `${getMediaUrl(MEDIA_CONFIG.PATHS.INSTALLATION_GUIDES)}/`
 
-type Guide = {
-  label: string
-  folder_path: string
-  images: string[]
-  videos: string[]
-}
+// 媒体基础路径 - 使用 computed 响应式获取
+const MEDIA_BASE_URL = computed(() => `${getMediaUrl(MEDIA_CONFIG.PATHS.INSTALLATION_GUIDES)}/`)
 
 const guides = ref<Guide[]>(installationGuidesData as Guide[])
 const failedImages = ref<Set<string>>(new Set())
@@ -185,46 +181,9 @@ onMounted(() => {
 </script>
 
 <style scoped>
-/* 网格背景 */
-.bg-grid-pattern {
-  background-image:
-    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-  background-size: 40px 40px;
-}
-
 /* 指南卡片 */
 .guide-card {
   position: relative;
   overflow: hidden;
-}
-
-/* 微光效果 */
-.shimmer-effect {
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 50%;
-  height: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.05),
-    transparent
-  );
-  pointer-events: none;
-}
-
-.guide-card:hover .shimmer-effect {
-  animation: shimmer 1.5s ease-in-out;
-}
-
-@keyframes shimmer {
-  0% {
-    left: -100%;
-  }
-  100% {
-    left: 200%;
-  }
 }
 </style>

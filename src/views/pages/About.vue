@@ -1,7 +1,7 @@
 <template>
   <div class="relative bg-black text-white min-h-screen">
     <!-- 返回按钮 -->
-    <BackButton :opacity="backButtonOpacity" :scroll-y="scrollY" @click="goBack" />
+    <BackButton :opacity="backButtonOpacity" :scroll-y="scrollY" :on-click="goBack" />
 
     <!-- 主内容 -->
     <div class="relative max-w-7xl mx-auto px-4 md:px-8 py-20">
@@ -135,21 +135,17 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue'
 import { useRouter } from 'vue-router'
 import BackButton from '@/components/BackButton.vue'
 import { MEDIA_CONFIG, getMediaUrl } from '@/config'
 import { useScroll, useBackButtonOpacity } from '@/composables/useScroll'
+import type { TimelineItem } from '@/types/guide'
 
 const router = useRouter()
-const MEDIA_BASE_URL = `${getMediaUrl(MEDIA_CONFIG.PATHS.IMAGES)}/about-us/`
-const scrollY = useScroll()
+const MEDIA_BASE_URL = computed(() => `${getMediaUrl(MEDIA_CONFIG.PATHS.IMAGES)}/about-us/`)
+const { scrollY } = useScroll()
 const backButtonOpacity = useBackButtonOpacity(scrollY)
-
-interface TimelineItem {
-  year: string | number
-  title: string
-  description: string
-}
 
 const timelineItems: TimelineItem[] = [
   {
