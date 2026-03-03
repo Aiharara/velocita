@@ -110,15 +110,6 @@
       </div>
     </div>
 
-    <!-- Footer -->
-    <footer class="relative py-16 md:py-20 bg-black overflow-hidden border-t border-white/10">
-      <div class="relative max-w-7xl mx-auto px-4 md:px-8 text-center">
-        <p class="text-white/50 text-sm">
-          © {{ new Date().getFullYear() }} Velocita. All rights reserved.
-        </p>
-      </div>
-    </footer>
-
     <!-- 视频播放弹窗 -->
     <Dialog
         v-model:visible="showVideoDialog"
