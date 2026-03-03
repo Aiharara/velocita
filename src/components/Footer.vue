@@ -65,7 +65,15 @@
                 <img src="/red-book.svg" alt="小红书" class="w-3.5 h-3.5 opacity-80" />
               </div>
               <a href="https://www.xiaohongshu.com/user/profile/649086cf000000001001ec9a" target="_blank" rel="noopener noreferrer" class="text-white/60 text-sm hover:text-yellow-300 transition-colors">
-                @velocita_exhaust_au
+                Velocita Exhaust AU
+              </a>
+            </li>
+            <li class="flex items-start gap-3">
+              <div class="w-4 h-4 flex items-center justify-center mt-0.5">
+                <img src="/facebook.svg" alt="Facebook" class="w-3.5 h-3.5 opacity-80" />
+              </div>
+              <a href="https://www.facebook.com/profile.php?id=61588059698030" target="_blank" rel="noopener noreferrer" class="text-white/60 text-sm hover:text-yellow-300 transition-colors">
+                Velocita Exhaust AU
               </a>
             </li>
             <li class="flex items-start gap-3">

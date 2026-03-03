@@ -42,19 +42,39 @@
       </template>
 
       <template #end>
-        <div class="flex items-center gap-4">
-<!--          <Button-->
-<!--              label="Get Quote"-->
-<!--              icon="pi pi-bolt"-->
-<!--              class="!bg-gradient-to-r !from-yellow-400 !to-yellow-500 !text-black !border-0 hover:!from-yellow-300 hover:!to-yellow-400 !font-semibold !transition-all !duration-300 hover:!scale-105 !rounded-lg !shadow-lg !shadow-yellow-500/25 !px-5 !py-2.5"-->
-<!--          />-->
-<!--          <Button-->
-<!--              label="Warranty"-->
-<!--              icon="pi pi-shield"-->
-<!--              severity="secondary"-->
-<!--              outlined-->
-<!--              class="!border-white/20 !text-white/80 hover:!text-white hover:!border-white/40 hover:!bg-white/5 !rounded-lg !transition-all !duration-300 !px-5 !py-2.5"-->
-<!--          />-->
+        <div class="flex items-center">
+          <div class="relative">
+            <div
+                class="warranty-badge group cursor-pointer"
+                @mouseenter="onWarrantyEnter"
+                @mouseleave="onWarrantyLeave"
+                @click.stop="onWarrantyClick"
+            >
+              <div class="warranty-icon-wrap">
+                <i class="pi pi-shield"></i>
+              </div>
+              <div class="hidden md:flex flex-col ml-2.5 leading-none">
+                <span class="text-[10px] uppercase tracking-widest text-yellow-400/80 font-semibold">3-Year</span>
+                <span class="text-xs text-white/80 group-hover:text-white font-medium mt-0.5 transition-colors duration-300">Warranty</span>
+              </div>
+            </div>
+            <Transition name="warranty-fade">
+              <div v-if="showWarrantyInfo" class="warranty-popup" @click.stop>
+                <div class="warranty-popup-arrow"></div>
+                <div class="text-center">
+                  <div class="flex items-center justify-center gap-2 mb-2">
+                    <i class="pi pi-shield text-yellow-400 text-sm"></i>
+                    <span class="text-yellow-400 font-bold text-sm">3-Year Warranty</span>
+                  </div>
+                  <p class="text-white/70 text-xs leading-relaxed">
+                    Comprehensive coverage on all
+                    Velocita exhaust products against
+                    manufacturing defects.
+                  </p>
+                </div>
+              </div>
+            </Transition>
+          </div>
         </div>
       </template>
     </Menubar>
@@ -67,7 +87,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onBeforeUnmount } from 'vue'
 import { useRouter } from 'vue-router'
 import Menubar from 'primevue/menubar'
 import { eventBus } from '@/utils/eventBus.ts'
@@ -99,6 +119,35 @@ function onNavClick(_e: MouseEvent, item: MenuItem) {
     }
   })
 }
+
+// Warranty popup logic
+const showWarrantyInfo = ref(false)
+const hasHover = typeof window !== 'undefined' && window.matchMedia('(hover: hover)').matches
+
+function onWarrantyEnter() {
+  if (hasHover) showWarrantyInfo.value = true
+}
+
+function onWarrantyLeave() {
+  if (hasHover) showWarrantyInfo.value = false
+}
+
+function onWarrantyClick() {
+  if (!hasHover) {
+    showWarrantyInfo.value = !showWarrantyInfo.value
+    if (showWarrantyInfo.value) {
+      setTimeout(() => document.addEventListener('click', closeWarrantyPopup, { once: true }), 0)
+    }
+  }
+}
+
+function closeWarrantyPopup() {
+  showWarrantyInfo.value = false
+}
+
+onBeforeUnmount(() => {
+  document.removeEventListener('click', closeWarrantyPopup)
+})
 </script>
 
 <style scoped>
@@ -196,6 +245,80 @@ function onNavClick(_e: MouseEvent, item: MenuItem) {
   :deep(.p-menubar-item-link:hover) {
     background: rgba(250, 204, 21, 0.1) !important;
   }
+}
+
+/* Warranty Badge */
+.warranty-badge {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 0.75rem;
+  border-radius: 10px;
+  border: 1px solid rgba(250, 204, 21, 0.15);
+  background: linear-gradient(135deg, rgba(250, 204, 21, 0.05), transparent);
+  transition: all 0.3s ease;
+}
+
+.warranty-badge:hover {
+  border-color: rgba(250, 204, 21, 0.35);
+  background: linear-gradient(135deg, rgba(250, 204, 21, 0.12), rgba(250, 204, 21, 0.03));
+  transform: translateY(-1px);
+  box-shadow: 0 4px 15px rgba(250, 204, 21, 0.1);
+}
+
+.warranty-icon-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, rgba(250, 204, 21, 0.2), rgba(250, 204, 21, 0.08));
+  color: #fbbf24;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+}
+
+.warranty-badge:hover .warranty-icon-wrap {
+  background: linear-gradient(135deg, rgba(250, 204, 21, 0.35), rgba(250, 204, 21, 0.15));
+  box-shadow: 0 0 10px rgba(250, 204, 21, 0.2);
+}
+
+/* Warranty Popup */
+.warranty-popup {
+  position: absolute;
+  top: calc(100% + 12px);
+  right: 0;
+  min-width: 230px;
+  padding: 16px 20px;
+  background: rgba(10, 10, 10, 0.98);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(250, 204, 21, 0.2);
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), 0 0 20px rgba(250, 204, 21, 0.05);
+  z-index: 100;
+}
+
+.warranty-popup-arrow {
+  position: absolute;
+  top: -6px;
+  right: 24px;
+  width: 12px;
+  height: 12px;
+  background: rgba(10, 10, 10, 0.98);
+  border-top: 1px solid rgba(250, 204, 21, 0.2);
+  border-left: 1px solid rgba(250, 204, 21, 0.2);
+  transform: rotate(45deg);
+}
+
+.warranty-fade-enter-active,
+.warranty-fade-leave-active {
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.warranty-fade-enter-from,
+.warranty-fade-leave-to {
+  opacity: 0;
+  transform: translateY(-4px);
 }
 
 /* 横屏模式下的特殊调整 - 降低高度 */
