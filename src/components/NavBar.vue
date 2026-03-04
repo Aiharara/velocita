@@ -88,13 +88,14 @@
 
 <script setup lang="ts">
 import { ref, onBeforeUnmount } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import Menubar from 'primevue/menubar'
 import { eventBus } from '@/utils/eventBus.ts'
 
 interface MenuItem { label: string; to: string; [key: string]: unknown }
 
 const router = useRouter()
+const route = useRoute()
 
 // Props
 defineProps<{
@@ -111,6 +112,11 @@ const items = ref<MenuItem[]>([
 ])
 
 function onNavClick(_e: MouseEvent, item: MenuItem) {
+  // If clicking Contact Us and already on a non-home page, scroll within current page
+  if (item.to === '/#contact-us' && route.path !== '/') {
+    eventBus.emit('highlight-contact')
+    return
+  }
   // Use router.push to ensure scrollBehavior is invoked correctly
   router.push(item.to).then(() => {
     // After navigation completes, emit highlight-contact if navigating to contact-us
@@ -145,9 +151,17 @@ function closeWarrantyPopup() {
   showWarrantyInfo.value = false
 }
 
+function onShowWarranty() {
+  showWarrantyInfo.value = true
+  setTimeout(() => document.addEventListener('click', closeWarrantyPopup, { once: true }), 0)
+}
+
 onBeforeUnmount(() => {
   document.removeEventListener('click', closeWarrantyPopup)
 })
+
+// Listen for warranty popup trigger from eventBus (e.g., from Footer)
+eventBus.on('show-warranty', onShowWarranty)
 </script>
 
 <style scoped>
@@ -252,6 +266,7 @@ onBeforeUnmount(() => {
   display: flex;
   align-items: center;
   padding: 0.5rem 0.75rem;
+  margin-right: 0.5rem;
   border-radius: 10px;
   border: 1px solid rgba(250, 204, 21, 0.15);
   background: linear-gradient(135deg, rgba(250, 204, 21, 0.05), transparent);
@@ -287,7 +302,7 @@ onBeforeUnmount(() => {
 .warranty-popup {
   position: absolute;
   top: calc(100% + 12px);
-  right: 0;
+  right: 8px;
   min-width: 230px;
   padding: 16px 20px;
   background: rgba(10, 10, 10, 0.98);
@@ -301,7 +316,7 @@ onBeforeUnmount(() => {
 .warranty-popup-arrow {
   position: absolute;
   top: -6px;
-  right: 24px;
+  right: 16px;
   width: 12px;
   height: 12px;
   background: rgba(10, 10, 10, 0.98);

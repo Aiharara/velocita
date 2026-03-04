@@ -15,9 +15,9 @@
         <!-- Brand Info -->
         <div class="md:col-span-1">
           <img src="/logo.png" class="h-10 w-auto mb-4" alt="Velocita" />
-          <h3 class="text-2xl font-bold text-white mb-3">VELOCITA</h3>
-          <p class="text-white/60 text-sm leading-relaxed">
-            Performance exhaust solutions engineered for modern platforms.<br />
+          <h3 class="text-2xl font-bold text-white mb-4 tracking-widest">VELOCITA</h3>
+          <p class="text-white/50 text-sm leading-7">
+            Performance exhaust solutions engineered for modern platforms.
             Precision craftsmanship, refined design, ultimate performance.
           </p>
         </div>
@@ -26,11 +26,11 @@
         <div>
           <h4 class="text-white font-semibold mb-4 uppercase tracking-wider text-sm">Products & Services</h4>
           <ul class="space-y-3">
-            <li><a href="#products" class="footer-link">Exhaust Products</a></li>
-            <li><a href="#guide" class="footer-link">Installation Guide</a></li>
-            <li><a href="#cases" class="footer-link">Case Videos</a></li>
+            <li><a href="#products" class="footer-link">Products</a></li>
+            <li><RouterLink to="/guides" class="footer-link">Guide</RouterLink></li>
+            <li><RouterLink to="/video-gallery" class="footer-link">Video Gallery</RouterLink></li>
             <li><RouterLink to="/about" class="footer-link">About Us</RouterLink></li>
-            <li><a href="#" class="footer-link">Warranty Policy</a></li>
+            <li><a href="#" class="footer-link" @click.prevent="showWarrantyPopup">Warranty Policy</a></li>
           </ul>
         </div>
 
@@ -139,6 +139,10 @@ function handleHashChange() {
 
 function onHighlightContact() {
   triggerHighlight()
+}
+
+function showWarrantyPopup() {
+  eventBus.emit('show-warranty')
 }
 
 onMounted(() => {

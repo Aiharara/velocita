@@ -206,8 +206,8 @@ import type { Product } from '@/types/product'
 
 gsap.registerPlugin(ScrollTrigger)
 
-// 图片基础路径 - 使用 computed 响应式获取
-const IMAGE_BASE_URL = computed(() => `${getMediaUrl(MEDIA_CONFIG.PATHS.IMAGES)}/exhaust-system`)
+// 图片基础路径
+const IMAGE_BASE_URL = `${getMediaUrl(MEDIA_CONFIG.PATHS.IMAGES)}/exhaust-system`
 
 const products = ref<Product[]>((exhaustSystemData as Product[]).reverse())
 const showGallery = ref(false)

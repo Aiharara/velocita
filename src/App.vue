@@ -1,9 +1,8 @@
 <template>
   <div class="main-entry">
-    <!-- 全局导航栏 - 首页固定+淡出效果，其他页面sticky+返回按钮 -->
+    <!-- 全局导航栏 - 所有页面都fixed常驻 -->
     <div
-        :class="isHomePage ? 'fixed' : 'sticky'"
-        class="top-0 left-0 right-0 z-40 transition-opacity duration-500"
+        class="fixed top-0 left-0 right-0 z-40 transition-opacity duration-500"
         :style="{ opacity: isHomePage ? navOpacity : 1 }"
     >
       <NavBar :show-back-button="!isHomePage" />

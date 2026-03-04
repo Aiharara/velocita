@@ -136,13 +136,11 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { useRouter } from 'vue-router'
 import BackButton from '@/components/BackButton.vue'
 import { MEDIA_CONFIG, getMediaUrl } from '@/config'
 import { useScroll, useBackButtonOpacity } from '@/composables/useScroll'
 import type { TimelineItem } from '@/types/guide'
 
-const router = useRouter()
 const MEDIA_BASE_URL = computed(() => `${getMediaUrl(MEDIA_CONFIG.PATHS.IMAGES)}/about-us/`)
 const { scrollY } = useScroll()
 const backButtonOpacity = useBackButtonOpacity(scrollY)
@@ -196,7 +194,7 @@ const timelineItems: TimelineItem[] = [
 ]
 
 function goBack() {
-  router.push('/')
+  window.location.hash = 'contact-us'
 }
 </script>
 

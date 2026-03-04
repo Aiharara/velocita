@@ -185,8 +185,8 @@ gsap.registerPlugin(ScrollTrigger)
 
 const router = useRouter()
 
-// 视频基础路径 - 使用 computed 响应式获取
-const VIDEO_BASE_URL = computed(() => `${getMediaUrl(MEDIA_CONFIG.PATHS.VIDEOS)}`)
+// 视频基础路径
+const VIDEO_BASE_URL = `${getMediaUrl(MEDIA_CONFIG.PATHS.VIDEOS)}`
 
 type VideoItem = {
   url: string
@@ -230,12 +230,12 @@ const buildVideos = (): VideoItem[] => {
       }
 
       return {
-        url: `${VIDEO_BASE_URL.value}${video.url}`,
+        url: `${VIDEO_BASE_URL}${video.url}`,
         title: `${brandName} ${video.label}`,
         subtitle: config.subtitle,
         tag: config.tag,
         brand: brandName,
-        poster: `${VIDEO_BASE_URL.value}${video.poster}`
+        poster: `${VIDEO_BASE_URL}${video.poster}`
       }
     })
     .filter((item): item is VideoItem => item !== null)

@@ -7,6 +7,7 @@ type EventCallback = (...args: unknown[]) => void
 
 interface EventMap {
   'highlight-contact': () => void
+  'show-warranty': () => void
 }
 
 class EventBus {

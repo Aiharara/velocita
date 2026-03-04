@@ -152,7 +152,6 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import { useRouter } from 'vue-router'
 import Dialog from 'primevue/dialog'
 import BackButton from '@/components/BackButton.vue'
 import ServiceBanner from '@/components/ServiceBanner.vue'
@@ -160,8 +159,8 @@ import videoGallery from '@/assets/data/video-gallery.json'
 import { MEDIA_CONFIG, getMediaUrl } from '@/config'
 import { useScroll, useBackButtonOpacity } from '@/composables/useScroll'
 
-const VIDEO_BASE_URL = computed(() => `${getMediaUrl(MEDIA_CONFIG.PATHS.VIDEOS)}`)
-const router = useRouter()
+// 视频基础路径
+const VIDEO_BASE_URL = `${getMediaUrl(MEDIA_CONFIG.PATHS.VIDEOS)}`
 
 const selectedBrand = ref<string | null>(null)
 const { scrollY } = useScroll()
@@ -180,7 +179,7 @@ const filteredBrands = computed(() => {
 })
 
 function goBack() {
-  router.push('/#cases')
+  window.location.hash = 'contact-us'
 }
 
 function handleDialogVideoLoaded(event: Event) {
@@ -191,7 +190,7 @@ function handleDialogVideoLoaded(event: Event) {
 
 function openVideoDialog(videoUrl: string, videoLabel: string, brandName: string) {
   currentVideo.value = {
-    url: `${VIDEO_BASE_URL}${videoUrl}`,
+    url: VIDEO_BASE_URL + videoUrl,
     label: videoLabel,
     brandName: brandName
   }

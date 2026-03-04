@@ -122,8 +122,8 @@ gsap.registerPlugin(ScrollTrigger)
 
 const router = useRouter()
 
-// 媒体基础路径 - 使用 computed 响应式获取
-const MEDIA_BASE_URL = computed(() => `${getMediaUrl(MEDIA_CONFIG.PATHS.INSTALLATION_GUIDES)}/`)
+// 媒体基础路径
+const MEDIA_BASE_URL = `${getMediaUrl(MEDIA_CONFIG.PATHS.INSTALLATION_GUIDES)}/`
 
 const guides = ref<Guide[]>(installationGuidesData as Guide[])
 const failedImages = ref<Set<string>>(new Set())
